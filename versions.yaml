@@ -1,0 +1,28 @@
+versions:
+  - dir: '5.2.0'
+    repo: elasticsearch52
+    tags:
+      - 5.2.0
+      - latest
+    from: &from gcr.io/google-appengine/openjdk
+    packages:
+      gosu: &gosu
+        version: '1.10'
+        gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      elasticsearch:
+        gpg: &elasticsearch_gpg 46095ACC8548582C1A2699A9D27D666CD88E42B4
+        major: 5.2
+        version: 5.2.0
+  - dir: '2.4.4'
+    repo: elasticsearch24
+    tags:
+      - 2.4.4
+      - latest
+    from: *from
+    packages:
+      gosu: *gosu
+      elasticsearch:
+        gpg: *elasticsearch_gpg
+        major: 2.4
+        version: 2.4.4
+
