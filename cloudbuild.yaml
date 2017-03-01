@@ -5,12 +5,12 @@ steps:
   - name: gcr.io/cloud-builders/docker
     args:
       - 'build'
-      - '--tag=gcr.io/$PROJECT_ID/elasticsearch52:5.2.0'
+      - '--tag=gcr.io/$PROJECT_ID/elasticsearch5:5.2.0'
       - '5.2.0'
   - name: gcr.io/cloud-builders/docker
     args:
       - 'build'
-      - '--tag=gcr.io/$PROJECT_ID/elasticsearch24:2.4.4'
+      - '--tag=gcr.io/$PROJECT_ID/elasticsearch2:2.4.4'
       - '2.4.4'
 
 # Run tests
@@ -18,15 +18,15 @@ steps:
 # Add alias tags
   - name: gcr.io/cloud-builders/retagger
     args:
-      - 'gcr.io/$PROJECT_ID/elasticsearch52:5.2.0'
-      - 'gcr.io/$PROJECT_ID/elasticsearch52:latest'
+      - 'gcr.io/$PROJECT_ID/elasticsearch5:5.2.0'
+      - 'gcr.io/$PROJECT_ID/elasticsearch5:latest'
   - name: gcr.io/cloud-builders/retagger
     args:
-      - 'gcr.io/$PROJECT_ID/elasticsearch24:2.4.4'
-      - 'gcr.io/$PROJECT_ID/elasticsearch24:latest'
+      - 'gcr.io/$PROJECT_ID/elasticsearch2:2.4.4'
+      - 'gcr.io/$PROJECT_ID/elasticsearch2:latest'
 
 images:
-  - 'gcr.io/$PROJECT_ID/elasticsearch52:5.2.0'
-  - 'gcr.io/$PROJECT_ID/elasticsearch52:latest'
-  - 'gcr.io/$PROJECT_ID/elasticsearch24:2.4.4'
-  - 'gcr.io/$PROJECT_ID/elasticsearch24:latest'
+  - 'gcr.io/$PROJECT_ID/elasticsearch5:5.2.0'
+  - 'gcr.io/$PROJECT_ID/elasticsearch5:latest'
+  - 'gcr.io/$PROJECT_ID/elasticsearch2:2.4.4'
+  - 'gcr.io/$PROJECT_ID/elasticsearch2:latest'
