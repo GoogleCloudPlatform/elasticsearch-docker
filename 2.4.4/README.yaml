@@ -1,0 +1,129 @@
+# Copyright (c) 2017, Google Inc.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of Google Inc. nor the
+#       names of its contributors may be used to endorse or promote products
+#       derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL Google Inc. BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Used with http://github.com/GoogleCloudPlatform/runtimes-common/tree/master/docgen
+_templates:
+- &Image launcher.gcr.io/google/elasticsearch2
+- &PullCommand gcloud docker -- pull launcher.gcr.io/google/elasticsearch2
+- &ServiceArgs
+  name: elasticsearch
+  image: *Image
+- &BaseServerRun
+  <<: *ServiceArgs
+  exposedPorts:
+  - port: 9200
+- &BaseClientRun
+  name: elasticsearch
+  image: *Image
+  runType: INTERACTIVE_SHELL
+- &BaseExec
+  execType: INTERACTIVE_SHELL
+
+overview:
+  description: |-
+    This image contains an installation Elasticsearch 2.4.4.
+
+    For more information, see the [Official Image Launcher Page](https://console.cloud.google.com/launcher/details/google/elasticsearch).
+  dockerfileUrl: https://github.com/GoogleCloudPlatform/elasticsearch-docker/tree/master/2.4.4
+  pullCommand: *PullCommand
+
+taskGroups:
+- title: Running Elasticsearch
+  tasks:
+  - title: Start a Elasticsearch Instance
+    runtimes: [DOCKER, KUBERNETES]
+    instructions:
+    - run:
+        <<: *BaseServerRun
+- title: Using Elasticsearch
+  tasks:
+  - title: Connect and start using elasticsearch.
+    description: Attach to the container.
+    runtimes: [DOCKER, KUBERNETES]
+    instructions:
+    - exec:
+        <<: *BaseExec
+        containerName: some-elasticsearch
+        command: bash
+        subcommands:
+        - description: To get data into elasticsearch we use the `curl` command. We must install curl as it's not installed by default. 
+          command: apt-get install -y curl
+        - description: Now we have curl installed, we can get test data into elasticsearch using a HTTP PUT request. This will populate elasticsearch with test data.
+          command: |-
+            curl -XPUT http://localhost:9200/estest/test/1 -d \
+            '{
+               "name" : "Elasticsearch Test",
+               "Description": "This is just a test"
+             }'
+        - description: Now the data is in elasticsearch, we can search for it using `curl`.
+          command: curl http://localhost:9200/estest/_search?q=Test
+- title: Adding persistence
+  description: |-
+    The container is built with a default VOLUME of `/use/share/elasticsearch/data`. The data will survive a reboot but if the container is moved then the data will be lost.
+
+    To ensure the data is retained, we create a persistent data volume.
+  tasks:
+  - title: Use a persistent data volume
+    runtimes: [DOCKER, KUBERNETES]
+    instructions:
+    - run:
+        <<: *BaseServerRun
+        volumes:
+        - name: elasticsearchdata
+          path: /usr/share/elasticsearch/data
+          emptyPersistentVolume:
+            hostPath: /path/to/your/elasticsearch/data/directory
+- title: Configurations
+  anchorId: configurations
+  tasks:
+  - title: Using configuration volume
+    runtimes: [DOCKER, KUBERNETES]
+    instructions:
+    - description: |-
+        Elasticsearch gets configuration from `/usr/share/elasticsearch/config/elasticsearch.yml`. We can customize and tweak elasticsearch by creating a configuration VOLUME which will be read on container startup.
+      run:
+        <<: *BaseServerRun
+        volumes:
+        - name: elasticsearchconfig
+          path: /usr/share/elasticsearch/config
+          singleFile:
+            hostFile: /path/to/your/elasticsearch/config/elasticsearch.yml
+    - description: >-
+        See [Volume reference](#references-volumes) for more details.
+
+
+portReference:
+  ports:
+  - port: '9200'
+    description: Elasticsearch HTTP port.
+  - port: '9300'
+    description: Elasticsearch default communication port.
+
+volumeReference:
+  volumes:
+  - path: /usr/share/elasticsearch/data
+    description: Location to the VOLUME where the elasticsearch data lives.
+  - path: /usr/share/elasticsearch/config/elasticsearch.yml
+    description: Location to the VOLUME where elasticsearch reads its configuration settings.
