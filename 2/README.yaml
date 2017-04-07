@@ -68,8 +68,8 @@ taskGroups:
         containerName: some-elasticsearch
         command: bash
         subcommands:
-        - description: To get data into elasticsearch we use the `curl` command. We must install curl as it's not installed by default. 
-          command: apt-get install -y curl
+        - description: To get data into elasticsearch we use the `curl` command. We must install curl as it's not installed by default.
+          command: apt-get update && apt-get install -y curl
         - description: Now we have curl installed, we can get test data into elasticsearch using a HTTP PUT request. This will populate elasticsearch with test data.
           command: |-
             curl -XPUT http://localhost:9200/estest/test/1 -d \

@@ -2,7 +2,7 @@
 
 This image contains an installation Elasticsearch 2.4.4.
 
-For more information, see the [Official Image Launcher Page](https://console.cloud.google.com/launcher/details/google/elasticsearch2).
+For more information, see the [Official Image Launcher Page](https://console.cloud.google.com/launcher/details/google/elasticsearch).
 
 Pull command:
 ```shell
@@ -64,13 +64,18 @@ kubectl expose pod some-elasticsearch --name some-elasticsearch-9200 \
 
 ### <a name="connect-and-start-using-elasticsearch-kubernetes"></a>Connect and start using elasticsearch.
 
-Use the `curl` command we can add and search for data.
+Attach to the container.
 
 ```shell
-kubectl exec -it some-elasticsearch -- curl http://localhost:9200
+kubectl exec -it some-elasticsearch -- bash
 ```
 
-To get data into elasticsearch we use the `curl` command. The HTTP verb PUT can populate elasticsearch with test data.
+To get data into elasticsearch we use the `curl` command. We must install curl as it's not installed by default.
+```
+apt-get update && apt-get install -y curl
+```
+
+Now we have curl installed, we can get test data into elasticsearch using a HTTP PUT request. This will populate elasticsearch with test data.
 ```
 curl -XPUT http://localhost:9200/estest/test/1 -d \
 '{
@@ -79,7 +84,7 @@ curl -XPUT http://localhost:9200/estest/test/1 -d \
  }'
 ```
 
-To search elasticsearch for the data we added we also use the `curl` command.
+Now the data is in elasticsearch, we can search for it using `curl`.
 ```
 curl http://localhost:9200/estest/_search?q=Test
 ```
@@ -200,13 +205,18 @@ docker run \
 
 ### <a name="connect-and-start-using-elasticsearch-docker"></a>Connect and start using elasticsearch.
 
-Use the `curl` command we can add and search for data.
+Attach to the container.
 
 ```shell
-docker exec -it some-elasticsearch curl http://localhost:9200
+docker exec -it some-elasticsearch bash
 ```
 
-To get data into elasticsearch we use the `curl` command. The HTTP verb PUT can populate elasticsearch with test data.
+To get data into elasticsearch we use the `curl` command. We must install curl as it's not installed by default.
+```
+apt-get update && apt-get install -y curl
+```
+
+Now we have curl installed, we can get test data into elasticsearch using a HTTP PUT request. This will populate elasticsearch with test data.
 ```
 curl -XPUT http://localhost:9200/estest/test/1 -d \
 '{
@@ -215,7 +225,7 @@ curl -XPUT http://localhost:9200/estest/test/1 -d \
  }'
 ```
 
-To search elasticsearch for the data we added we also use the `curl` command.
+Now the data is in elasticsearch, we can search for it using `curl`.
 ```
 curl http://localhost:9200/estest/_search?q=Test
 ```

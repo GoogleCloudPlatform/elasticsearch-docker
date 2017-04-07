@@ -72,7 +72,7 @@ kubectl exec -it some-elasticsearch -- bash
 
 To get data into elasticsearch we use the `curl` command. We must install curl as it's not installed by default.
 ```
-apt-get install -y curl
+apt-get update && apt-get install -y curl
 ```
 
 Now we have curl installed, we can get test data into elasticsearch using a HTTP PUT request. This will populate elasticsearch with test data.
@@ -213,7 +213,7 @@ docker exec -it some-elasticsearch bash
 
 To get data into elasticsearch we use the `curl` command. We must install curl as it's not installed by default.
 ```
-apt-get install -y curl
+apt-get update && apt-get install -y curl
 ```
 
 Now we have curl installed, we can get test data into elasticsearch using a HTTP PUT request. This will populate elasticsearch with test data.
