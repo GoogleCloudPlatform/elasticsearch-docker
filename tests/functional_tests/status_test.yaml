@@ -1,6 +1,6 @@
 setup:
 - command: [docker, run, --privileged=true, --name, some-elasticsearch, -d, '$IMAGE']
-- command: [sleep, 5s]
+- command: [sleep, 30s]
 
 teardown:
 - command: [docker, stop, some-elasticsearch]
@@ -9,7 +9,7 @@ teardown:
 target: some-elasticsearch
 tests:
 - name: Check status
-  command: [wget, -q, '-O -', 'http://localhost:9200/_cat/health?h=status']
+  command: [wget, -q, -O, -, 'http://localhost:9200/_cat/health?h=status']
   expect:
     stdout:
-      exactly: green
+      equals: green
