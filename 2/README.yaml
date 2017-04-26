@@ -43,76 +43,93 @@ _templates:
 
 overview:
   description: |-
-    This image contains an installation Elasticsearch 2.4.4.
+    This image contains an installation Elasticsearch 2.x.
 
-    For more information, see the [Official Image Launcher Page](https://console.cloud.google.com/launcher/details/google/elasticsearch).
-  dockerfileUrl: https://github.com/GoogleCloudPlatform/elasticsearch-docker/tree/master/2.4.4
+    For more information, see the [Official Image Launcher Page](https://console.cloud.google.com/launcher/details/google/elasticsearch2).
+  dockerfileUrl: https://github.com/GoogleCloudPlatform/elasticsearch-docker/tree/master/2/2.4.4
   pullCommand: *PullCommand
 
 taskGroups:
-- title: Running Elasticsearch
+
+- title: Run Elasticsearch
   tasks:
-  - title: Start a Elasticsearch Instance
+  - title: Start an Elasticsearch instance
     runtimes: [DOCKER, KUBERNETES]
     instructions:
     - run:
         <<: *BaseServerRun
-- title: Using Elasticsearch
-  tasks:
-  - title: Connect and start using elasticsearch.
-    description: Attach to the container.
-    runtimes: [DOCKER, KUBERNETES]
-    instructions:
-    - exec:
-        <<: *BaseExec
-        containerName: some-elasticsearch
-        command: bash
-        subcommands:
-        - description: To get data into elasticsearch we use the `curl` command. We must install curl as it's not installed by default.
-          command: apt-get update && apt-get install -y curl
-        - description: Now we have curl installed, we can get test data into elasticsearch using a HTTP PUT request. This will populate elasticsearch with test data.
-          command: |-
-            curl -XPUT http://localhost:9200/estest/test/1 -d \
-            '{
-               "name" : "Elasticsearch Test",
-               "Description": "This is just a test"
-             }'
-        - description: Now the data is in elasticsearch, we can search for it using `curl`.
-          command: curl http://localhost:9200/estest/_search?q=Test
-- title: Adding persistence
-  description: |-
-    The container is built with a default VOLUME of `/use/share/elasticsearch/data`. The data will survive a reboot but if the container is moved then the data will be lost.
-
-    To ensure the data is retained, we create a persistent data volume.
-  tasks:
+    - description: >-
+        To retain Elasticsearch data across container restarts, see
+        [](#use-a-persistent-data-volume).
+    - description: >-
+        To configure your application, see [](#configurations).
   - title: Use a persistent data volume
+    anchorId: use-a-persistent-data-volume
+    description: >-
+      To retain Elasticsearch data across container restarts, we should use
+      a persistent volume for `/use/share/elasticsearch/data`.
     runtimes: [DOCKER, KUBERNETES]
     instructions:
+    - description: >-
+        Assume `/path/to/your/elasticsearch/data` is a
+        persistent data folder on your host.
+      applicableRuntimes: [DOCKER]
     - run:
         <<: *BaseServerRun
         volumes:
         - name: elasticsearchdata
           path: /usr/share/elasticsearch/data
           emptyPersistentVolume:
-            hostPath: /path/to/your/elasticsearch/data/directory
+            hostPath: /path/to/your/elasticsearch/data
+
+- title: Using Elasticsearch
+  tasks:
+  - title: Connect and start using Elasticsearch
+    description: Attach to the container.
+    runtimes: [DOCKER, KUBERNETES]
+    instructions:
+    - exec:
+        <<: *BaseExec
+        containerFromRun: *BaseServerRun
+        command: bash
+        subcommands:
+        - description: >-
+            The following examples use `curl`. First we need to install it as
+            it is not installed by default.
+          command: apt-get update && apt-get install -y curl
+        - description: We can get test data into Elasticsearch using a HTTP PUT request. This will populate Elasticsearch with test data.
+          command: |-
+            curl -XPUT http://localhost:9200/estest/test/1 -d \
+            '{
+               "name" : "Elasticsearch Test",
+               "Description": "This is just a test"
+             }'
+        - description: We can try searching for our test data using `curl`.
+          command: curl http://localhost:9200/estest/_search?q=Test
+
 - title: Configurations
   anchorId: configurations
   tasks:
   - title: Using configuration volume
+    description: >-
+      Assume `/path/to/your/elasticsearch.yml` is the configuration file on your
+      localhost. We can mount this as volume at
+      `/usr/share/elasticsearch/config/elasticsearch.yml` on the container for
+      Elasticsearch to read from.
     runtimes: [DOCKER, KUBERNETES]
     instructions:
-    - description: |-
-        Elasticsearch gets configuration from `/usr/share/elasticsearch/config/elasticsearch.yml`. We can customize and tweak elasticsearch by creating a configuration VOLUME which will be read on container startup.
-      run:
+    - run:
         <<: *BaseServerRun
         volumes:
         - name: elasticsearchconfig
           path: /usr/share/elasticsearch/config
           singleFile:
-            hostFile: /path/to/your/elasticsearch/config/elasticsearch.yml
+            hostFile: /path/to/your/elasticsearch.yml
     - description: >-
-        See [Volume reference](#references-volumes) for more details.
-
+        See [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html)
+        on available configuration options.
+    - description: >-
+        Also see [Volume reference](#references-volumes).
 
 portReference:
   ports:
@@ -124,6 +141,8 @@ portReference:
 volumeReference:
   volumes:
   - path: /usr/share/elasticsearch/data
-    description: Location to the VOLUME where the elasticsearch data lives.
+    description: Stores Elasticsearch data.
   - path: /usr/share/elasticsearch/config/elasticsearch.yml
-    description: Location to the VOLUME where elasticsearch reads its configuration settings.
+    description: Stores configurations.
+  - path: /usr/share/elasticsearch/config/log4j2.properties
+    description: Stores logging configurations.
