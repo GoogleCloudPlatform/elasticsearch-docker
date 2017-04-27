@@ -16,10 +16,9 @@ RUN set -x \
 	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
 	&& rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
 	&& chmod +x /usr/local/bin/gosu \
-    && gosu nobody true
+	&& gosu nobody true
 
 # Install Elastic Search
-
 RUN set -ex; \
 # https://artifacts.elastic.co/GPG-KEY-elasticsearch
 	key='46095ACC8548582C1A2699A9D27D666CD88E42B4'; \
@@ -32,15 +31,15 @@ RUN set -ex; \
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html
 RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends apt-transport-https && rm -rf /var/lib/apt/lists/* \
-	&& echo 'deb http://packages.elasticsearch.org/elasticsearch/2.x/debian stable main'  > /etc/apt/sources.list.d/elasticsearch.list
-
+	&& echo 'deb http://packages.elasticsearch.org/elasticsearch/2.x/debian stable main' > /etc/apt/sources.list.d/elasticsearch.list
 
 ENV ELASTICSEARCH_VERSION 2.4
 ENV ELASTICSEARCH_DEB_VERSION 2.4.4
 
 # grab the sourcecode
-
-RUN mkdir -p /usr/src/elasticsearch; wget https://github.com/elastic/elasticsearch/archive/v2.4.4.tar.gz -O /usr/src/elasticsearch/elasticsearch-source-v2.4.4.tar.gz;  tar -xzvf /usr/src/elasticsearch/elasticsearch-source-v2.4.4.tar.gz -C /usr/src/elasticsearch/
+RUN mkdir -p /usr/src/elasticsearch \
+	&& wget https://github.com/elastic/elasticsearch/archive/v2.4.4.tar.gz -O /usr/src/elasticsearch/elasticsearch-source-v2.4.4.tar.gz \
+	&& tar -xzvf /usr/src/elasticsearch/elasticsearch-source-v2.4.4.tar.gz -C /usr/src/elasticsearch/
 
 RUN set -x \
 	\
@@ -59,7 +58,6 @@ WORKDIR /usr/share/elasticsearch
 COPY config ./config
 
 # Download Apache 2.0 License
-
 RUN wget -q http://www.apache.org/licenses/LICENSE-2.0.txt -O /usr/share/elasticsearch/LICENSE
 
 RUN set -ex \
