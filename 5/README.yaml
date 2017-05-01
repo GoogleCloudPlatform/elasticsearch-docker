@@ -46,7 +46,7 @@ overview:
     This image contains an installation Elasticsearch 5.x.
 
     For more information, see the [Official Image Launcher Page](https://console.cloud.google.com/launcher/details/google/elasticsearch5).
-  dockerfileUrl: https://github.com/GoogleCloudPlatform/elasticsearch-docker/tree/master/5/5.2.0
+  dockerfileUrl: https://github.com/GoogleCloudPlatform/elasticsearch-docker/tree/master/5
   pullCommand: *PullCommand
 
 taskGroups:

@@ -46,7 +46,7 @@ overview:
     This image contains an installation Elasticsearch 2.x.
 
     For more information, see the [Official Image Launcher Page](https://console.cloud.google.com/launcher/details/google/elasticsearch2).
-  dockerfileUrl: https://github.com/GoogleCloudPlatform/elasticsearch-docker/tree/master/2/2.4.4
+  dockerfileUrl: https://github.com/GoogleCloudPlatform/elasticsearch-docker/tree/master/2
   pullCommand: *PullCommand
 
 taskGroups:

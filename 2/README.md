@@ -9,7 +9,7 @@ Pull command:
 gcloud docker -- pull launcher.gcr.io/google/elasticsearch2
 ```
 
-Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/elasticsearch-docker/tree/master/2/2.4.4).
+Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlatform/elasticsearch-docker/tree/master/2).
 
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Kubernetes](#using-kubernetes)
