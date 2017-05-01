@@ -5,6 +5,7 @@ This image contains an installation Elasticsearch 2.x.
 For more information, see the [Official Image Launcher Page](https://console.cloud.google.com/launcher/details/google/elasticsearch2).
 
 Pull command:
+
 ```shell
 gcloud docker -- pull launcher.gcr.io/google/elasticsearch2
 ```
@@ -39,6 +40,7 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 ### <a name="start-an-elasticsearch-instance-kubernetes"></a>Start an Elasticsearch instance
 
 Copy the following content to `pod.yaml` file, and run `kubectl create -f pod.yaml`.
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -53,6 +55,7 @@ spec:
 ```
 
 Run the following to expose the port:
+
 ```shell
 kubectl expose pod some-elasticsearch --name some-elasticsearch-9200 \
   --type LoadBalancer --port 9200 --protocol TCP
@@ -67,6 +70,7 @@ To configure your application, see [Configurations](#configurations-kubernetes).
 To retain Elasticsearch data across container restarts, we should use a persistent volume for `/use/share/elasticsearch/data`.
 
 Copy the following content to `pod.yaml` file, and run `kubectl create -f pod.yaml`.
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -101,6 +105,7 @@ spec:
 ```
 
 Run the following to expose the port:
+
 ```shell
 kubectl expose pod some-elasticsearch --name some-elasticsearch-9200 \
   --type LoadBalancer --port 9200 --protocol TCP
@@ -117,11 +122,13 @@ kubectl exec -it some-elasticsearch -- bash
 ```
 
 The following examples use `curl`. First we need to install it as it is not installed by default.
+
 ```
 apt-get update && apt-get install -y curl
 ```
 
 We can get test data into Elasticsearch using a HTTP PUT request. This will populate Elasticsearch with test data.
+
 ```
 curl -XPUT http://localhost:9200/estest/test/1 -d \
 '{
@@ -131,6 +138,7 @@ curl -XPUT http://localhost:9200/estest/test/1 -d \
 ```
 
 We can try searching for our test data using `curl`.
+
 ```
 curl http://localhost:9200/estest/_search?q=Test
 ```
@@ -142,12 +150,14 @@ curl http://localhost:9200/estest/_search?q=Test
 Assume `/path/to/your/elasticsearch.yml` is the configuration file on your localhost. We can mount this as volume at `/usr/share/elasticsearch/config/elasticsearch.yml` on the container for Elasticsearch to read from.
 
 Create the following `configmap`:
+
 ```shell
 kubectl create configmap elasticsearchconfig \
   --from-file=/path/to/your/elasticsearch.yml
 ```
 
 Copy the following content to `pod.yaml` file, and run `kubectl create -f pod.yaml`.
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -169,6 +179,7 @@ spec:
 ```
 
 Run the following to expose the port:
+
 ```shell
 kubectl expose pod some-elasticsearch --name some-elasticsearch-9200 \
   --type LoadBalancer --port 9200 --protocol TCP
@@ -185,6 +196,7 @@ Also see [Volume reference](#references-volumes).
 ### <a name="start-an-elasticsearch-instance-docker"></a>Start an Elasticsearch instance
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
+
 ```yaml
 version: '2'
 services:
@@ -213,6 +225,7 @@ To retain Elasticsearch data across container restarts, we should use a persiste
 Assume `/path/to/your/elasticsearch/data` is a persistent data folder on your host.
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
+
 ```yaml
 version: '2'
 services:
@@ -244,11 +257,13 @@ docker exec -it some-elasticsearch bash
 ```
 
 The following examples use `curl`. First we need to install it as it is not installed by default.
+
 ```
 apt-get update && apt-get install -y curl
 ```
 
 We can get test data into Elasticsearch using a HTTP PUT request. This will populate Elasticsearch with test data.
+
 ```
 curl -XPUT http://localhost:9200/estest/test/1 -d \
 '{
@@ -258,6 +273,7 @@ curl -XPUT http://localhost:9200/estest/test/1 -d \
 ```
 
 We can try searching for our test data using `curl`.
+
 ```
 curl http://localhost:9200/estest/_search?q=Test
 ```
@@ -269,6 +285,7 @@ curl http://localhost:9200/estest/_search?q=Test
 Assume `/path/to/your/elasticsearch.yml` is the configuration file on your localhost. We can mount this as volume at `/usr/share/elasticsearch/config/elasticsearch.yml` on the container for Elasticsearch to read from.
 
 Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
+
 ```yaml
 version: '2'
 services:
