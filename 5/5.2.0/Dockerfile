@@ -12,7 +12,7 @@ RUN set -x \
 	&& rm gosu.tar.gz \
 # extract gosu binary and check signature
 	&& export GNUPGHOME="$(mktemp -d)" \
-	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+	&& gpg --keyserver pgp.mit.edu --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
 	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
 	&& rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
 	&& chmod +x /usr/local/bin/gosu \
@@ -23,7 +23,7 @@ RUN set -ex; \
 # https://artifacts.elastic.co/GPG-KEY-elasticsearch
 	key='46095ACC8548582C1A2699A9D27D666CD88E42B4'; \
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+	gpg --keyserver pgp.mit.edu --recv-keys "$key"; \
 	gpg --export "$key" > /etc/apt/trusted.gpg.d/elastic.gpg; \
 	rm -r "$GNUPGHOME"; \
 	apt-key list
