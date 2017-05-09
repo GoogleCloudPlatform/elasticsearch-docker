@@ -17,6 +17,7 @@ versions:
     repo: elasticsearch5
     tags:
       - 5.2.0
+      - 5.2
       - latest
     from: &from gcr.io/google-appengine/openjdk
     packages:
@@ -31,6 +32,7 @@ versions:
     repo: elasticsearch2
     tags:
       - 2.4.4
+      - 2.4
       - latest
     from: *from
     packages:
