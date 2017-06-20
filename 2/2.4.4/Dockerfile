@@ -1,15 +1,16 @@
 FROM gcr.io/google-appengine/openjdk
 
+# Get the list of packages from the base image.
+COPY download_source /tmp
+RUN /tmp/download_source blacklist-all-current
+
 # add gosu for easy step-down from root
 ENV GOSU_VERSION 1.10
 RUN set -x \
-	&& apt-get update && apt-get install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \
-	&& wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
-	&& wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
-# copy source /usr/local/src OSS compliance
-        && wget -O gosu.tar.gz "https://github.com/tianon/gosu/archive/$GOSU_VERSION.tar.gz" \
-	&& tar -xvf gosu.tar.gz -C /usr/local/src \
-	&& rm gosu.tar.gz \
+	&& wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
+	&& wget -q -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
+# copy source code
+	&& wget -q -O /usr/local/src/gosu.tar.gz "https://github.com/tianon/gosu/archive/$GOSU_VERSION.tar.gz" \
 # extract gosu binary and check signature
 	&& export GNUPGHOME="$(mktemp -d)" \
 	&& gpg --keyserver pgp.mit.edu --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
@@ -36,17 +37,13 @@ RUN set -x \
 ENV ELASTICSEARCH_VERSION 2.4
 ENV ELASTICSEARCH_DEB_VERSION 2.4.4
 
-# grab the sourcecode
-RUN mkdir -p /usr/src/elasticsearch \
-	&& wget https://github.com/elastic/elasticsearch/archive/v2.4.4.tar.gz -O /usr/src/elasticsearch/elasticsearch-source-v2.4.4.tar.gz \
-	&& tar -xzvf /usr/src/elasticsearch/elasticsearch-source-v2.4.4.tar.gz -C /usr/src/elasticsearch/
+# copy source code
+RUN wget -q https://github.com/elastic/elasticsearch/archive/v2.4.4.tar.gz -O /usr/local/src/elasticsearch-source-v2.4.4.tar.gz
 
 RUN set -x \
-	\
 # don't allow the package to install its sysctl file (causes the install to fail)
 # Failed to write '262144' to '/proc/sys/vm/max_map_count': Read-only file system
 	&& dpkg-divert --rename /usr/lib/sysctl.d/elasticsearch.conf \
-	\
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends "elasticsearch=$ELASTICSEARCH_DEB_VERSION" \
 	&& rm -rf /var/lib/apt/lists/*
@@ -56,9 +53,6 @@ ENV PATH /usr/share/elasticsearch/bin:$PATH
 WORKDIR /usr/share/elasticsearch
 
 COPY config ./config
-
-# Download Apache 2.0 License
-RUN wget -q http://www.apache.org/licenses/LICENSE-2.0.txt -O /usr/share/elasticsearch/LICENSE
 
 RUN set -ex \
 	&& for path in \
@@ -79,3 +73,8 @@ COPY docker-entrypoint.sh /
 EXPOSE 9200 9300
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["elasticsearch"]
+
+# Download source code for GPL packages.
+RUN /tmp/download_source exclude-sources /etc/apt/sources.list.d/elasticsearch.list \
+	&& /tmp/download_source download /usr/local/src \
+	&& rm /tmp/download_source
