@@ -32,13 +32,13 @@ RUN set -ex; \
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html
 RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends apt-transport-https && rm -rf /var/lib/apt/lists/* \
-	&& echo 'deb http://packages.elasticsearch.org/elasticsearch/2.x/debian stable main' > /etc/apt/sources.list.d/elasticsearch.list
+	&& echo 'deb https://artifacts.elastic.co/packages/5.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
 
-ENV ELASTICSEARCH_VERSION 2.4
-ENV ELASTICSEARCH_DEB_VERSION 2.4.4
+ENV ELASTICSEARCH_VERSION 5.4.2
+ENV ELASTICSEARCH_DEB_VERSION 5.4.2
 
 # copy source code
-RUN wget -q https://github.com/elastic/elasticsearch/archive/v2.4.4.tar.gz -O /usr/local/src/elasticsearch-source-v2.4.4.tar.gz
+RUN wget -q https://github.com/elastic/elasticsearch/archive/v5.4.2.tar.gz -O /usr/local/src/elasticsearch-source-v5.4.2.tar.gz
 
 RUN set -x \
 # don't allow the package to install its sysctl file (causes the install to fail)
