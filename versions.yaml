@@ -16,7 +16,7 @@ versions:
   - dir: '5/5.4'
     repo: elasticsearch5
     tags:
-      - '5.4.2'
+      - '5.4.3'
       - '5.4'
       - '5'
       - latest
@@ -27,7 +27,7 @@ versions:
         gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
       elasticsearch:
         gpg: &elasticsearch_gpg 46095ACC8548582C1A2699A9D27D666CD88E42B4
-        version: '5.4.2'
+        version: '5.4.3'
   - dir: '2/2.4'
     repo: elasticsearch2
     tags:
