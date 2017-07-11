@@ -4,7 +4,7 @@ This image contains an installation Elasticsearch 5.x.
 
 For more information, see the [Official Image Launcher Page](https://console.cloud.google.com/launcher/details/google/elasticsearch5).
 
-Pull command:
+Pull command (first install [gcloud](https://cloud.google.com/sdk/downloads)):
 
 ```shell
 gcloud docker -- pull launcher.gcr.io/google/elasticsearch5
@@ -35,6 +35,9 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
 
 # <a name="using-kubernetes"></a>Using Kubernetes
 
+Consult [Launcher container documentation](https://cloud.google.com/launcher/docs/launcher-container)
+for additional information about setting up your Kubernetes environment.
+
 ## <a name="run-elasticsearch-kubernetes"></a>Run Elasticsearch
 
 ### <a name="start-an-elasticsearch-instance-kubernetes"></a>Start an Elasticsearch instance
@@ -54,7 +57,10 @@ spec:
       name: elasticsearch
 ```
 
-Run the following to expose the port:
+Run the following to expose the port.
+Depending on your cluster setup, this might expose your service to the
+Internet with an external IP address. For more information, consult
+[Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/).
 
 ```shell
 kubectl expose pod some-elasticsearch --name some-elasticsearch-9200 \
@@ -104,7 +110,10 @@ spec:
       storage: 5Gi
 ```
 
-Run the following to expose the port:
+Run the following to expose the port.
+Depending on your cluster setup, this might expose your service to the
+Internet with an external IP address. For more information, consult
+[Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/).
 
 ```shell
 kubectl expose pod some-elasticsearch --name some-elasticsearch-9200 \
@@ -178,7 +187,10 @@ spec:
         name: elasticsearchconfig
 ```
 
-Run the following to expose the port:
+Run the following to expose the port.
+Depending on your cluster setup, this might expose your service to the
+Internet with an external IP address. For more information, consult
+[Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/).
 
 ```shell
 kubectl expose pod some-elasticsearch --name some-elasticsearch-9200 \
@@ -190,6 +202,9 @@ See [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/
 Also see [Volume reference](#references-volumes).
 
 # <a name="using-docker"></a>Using Docker
+
+Consult [Launcher container documentation](https://cloud.google.com/launcher/docs/launcher-container)
+for additional information about setting up your Docker environment.
 
 ## <a name="run-elasticsearch-docker"></a>Run Elasticsearch
 
@@ -203,6 +218,8 @@ services:
   elasticsearch:
     container_name: some-elasticsearch
     image: launcher.gcr.io/google/elasticsearch5
+    ports:
+      - '9200:9200'
 ```
 
 Or you can use `docker run` directly:
@@ -210,6 +227,7 @@ Or you can use `docker run` directly:
 ```shell
 docker run \
   --name some-elasticsearch \
+  -p 9200:9200 \
   -d \
   launcher.gcr.io/google/elasticsearch5
 ```
@@ -232,6 +250,8 @@ services:
   elasticsearch:
     container_name: some-elasticsearch
     image: launcher.gcr.io/google/elasticsearch5
+    ports:
+      - '9200:9200'
     volumes:
       - /path/to/your/elasticsearch/data:/usr/share/elasticsearch/data
 ```
@@ -241,6 +261,7 @@ Or you can use `docker run` directly:
 ```shell
 docker run \
   --name some-elasticsearch \
+  -p 9200:9200 \
   -v /path/to/your/elasticsearch/data:/usr/share/elasticsearch/data \
   -d \
   launcher.gcr.io/google/elasticsearch5
@@ -292,6 +313,8 @@ services:
   elasticsearch:
     container_name: some-elasticsearch
     image: launcher.gcr.io/google/elasticsearch5
+    ports:
+      - '9200:9200'
     volumes:
       - /path/to/your/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
 ```
@@ -301,6 +324,7 @@ Or you can use `docker run` directly:
 ```shell
 docker run \
   --name some-elasticsearch \
+  -p 9200:9200 \
   -v /path/to/your/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml \
   -d \
   launcher.gcr.io/google/elasticsearch5
