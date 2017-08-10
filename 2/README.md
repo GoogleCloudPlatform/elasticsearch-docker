@@ -73,7 +73,7 @@ To configure your application, see [Configurations](#configurations-kubernetes).
 
 ### <a name="use-a-persistent-data-volume-kubernetes"></a>Use a persistent data volume
 
-To retain Elasticsearch data across container restarts, we should use a persistent volume for `/use/share/elasticsearch/data`.
+To retain Elasticsearch data across container restarts, we should use a persistent volume for `/usr/share/elasticsearch/data`.
 
 Copy the following content to `pod.yaml` file, and run `kubectl create -f pod.yaml`.
 
@@ -238,7 +238,7 @@ To configure your application, see [Configurations](#configurations-docker).
 
 ### <a name="use-a-persistent-data-volume-docker"></a>Use a persistent data volume
 
-To retain Elasticsearch data across container restarts, we should use a persistent volume for `/use/share/elasticsearch/data`.
+To retain Elasticsearch data across container restarts, we should use a persistent volume for `/usr/share/elasticsearch/data`.
 
 Assume `/path/to/your/elasticsearch/data` is a persistent data folder on your host.
 

@@ -67,7 +67,7 @@ taskGroups:
     anchorId: use-a-persistent-data-volume
     description: >-
       To retain Elasticsearch data across container restarts, we should use
-      a persistent volume for `/use/share/elasticsearch/data`.
+      a persistent volume for `/usr/share/elasticsearch/data`.
     runtimes: [DOCKER, KUBERNETES]
     instructions:
     - description: >-
