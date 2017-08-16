@@ -11,33 +11,39 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# Copyright (c) 2017, Google Inc.
+# All rights reserved.
+
+_variables:
+  from: &from gcr.io/google-appengine/openjdk
+  gosu: &gosu
+    version: '1.10'
+    gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+  gpg: &gpg 46095ACC8548582C1A2699A9D27D666CD88E42B4
 
 versions:
-  - dir: '5/5.4'
+  - dir: '5/5.5'
     repo: elasticsearch5
     tags:
-      - '5.4.3'
-      - '5.4'
+      - '5.5.1'
+      - '5.5'
       - '5'
-      - latest
-    from: &from gcr.io/google-appengine/openjdk
-    packages:
-      gosu: &gosu
-        version: '1.10'
-        gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-      elasticsearch:
-        gpg: &elasticsearch_gpg 46095ACC8548582C1A2699A9D27D666CD88E42B4
-        version: '5.4.3'
-  - dir: '2/2.4'
-    repo: elasticsearch2
-    tags:
-      - '2.4.5'
-      - '2.4'
-      - '2'
-      - latest
+      - 'latest'
     from: *from
     packages:
       gosu: *gosu
       elasticsearch:
-        gpg: *elasticsearch_gpg
-        version: '2.4.5'
+        gpg: *gpg
+        version: '5.5.1'
+  - dir: '2/2.4'
+    repo: elasticsearch2
+    tags:
+      - '2.4.6'
+      - '2.4'
+      - '2'
+    from: *from
+    packages:
+      gosu: *gosu
+      elasticsearch:
+        gpg: *gpg
+        version: '2.4.6'

@@ -35,7 +35,7 @@ RUN set -ex; \
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html
 RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends apt-transport-https && rm -rf /var/lib/apt/lists/* \
-{{- if (eq .Dir "5/5.4") }}
+{{- if (gt .Dir "5/") }}
 	&& echo 'deb https://artifacts.elastic.co/packages/5.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
 {{- else }}
 	&& echo 'deb http://packages.elasticsearch.org/elasticsearch/2.x/debian stable main' > /etc/apt/sources.list.d/elasticsearch.list
