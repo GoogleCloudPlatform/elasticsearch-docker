@@ -34,10 +34,6 @@ _templates:
   <<: *ServiceArgs
   exposedPorts:
   - port: 9200
-- &BaseClientRun
-  name: elasticsearch
-  image: *Image
-  runType: INTERACTIVE_SHELL
 - &BaseExec
   execType: INTERACTIVE_SHELL
 
@@ -58,6 +54,10 @@ taskGroups:
     instructions:
     - run:
         <<: *BaseServerRun
+    - description: >-
+        Elasticsearch host requires configured enviroment. On Linux host please
+        run `sysctl -w vm.max_map_count=262144`. For details please check
+        [official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html).
     - description: >-
         To retain Elasticsearch data across container restarts, see
         [](#use-a-persistent-data-volume).
@@ -130,6 +130,70 @@ taskGroups:
         on available configuration options.
     - description: >-
         Also see [Volume reference](#references-volumes).
+
+- title: Clustering
+  description: >-
+  tasks:
+  - title: Creating simple cluster
+    description: >-
+      In the following guide you will learn how to create simple two-node Elasticsearch cluster. This is only an example how to configure and link together containers, not a production ready configuration. For production ready configuration please refer to official documentation.
+    runtimes: [DOCKER]
+    instructions:
+    - description: |-
+        We will need a master node, that will also serve as a gateway to our cluster. Single slave node will be attached to the master node.
+
+        Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
+
+        ```yaml
+        version: '2'
+        services:
+          elasticsearch-master:
+            container_name: some-elasticsearch-master
+            image: launcher.gcr.io/google/elasticsearch5
+            ports:
+              - '9200:9200'
+            command:
+              - '-Enetwork.host=0.0.0.0'
+              - '-Etransport.tcp.port=9300'
+              - '-Ehttp.port=9200'
+          elasticsearch-slave:
+            container_name: some-elasticsearch-slave
+            image: launcher.gcr.io/google/elasticsearch5
+            command:
+              - '-Enetwork.host=0.0.0.0'
+              - '-Etransport.tcp.port=9300'
+              - '-Ehttp.port=9200'
+              - '-Ediscovery.zen.ping.unicast.hosts=some-elasticsearch-master'
+            depends_on:
+              - elasticsearch-master
+        ```
+
+        Or you can use `docker run` directly:
+
+        ```shell
+        # elasticsearch-master
+        docker run \
+          --name some-elasticsearch-master \
+          -p 9200:9200 \
+          -d \
+          launcher.gcr.io/google/elasticsearch5 \
+          -Enetwork.host=0.0.0.0 \
+          -Etransport.tcp.port=9300 \
+          -Ehttp.port=9200
+
+        # elasticsearch-slave
+        docker run \
+          --name some-elasticsearch-slave \
+          --link some-elasticsearch-master \
+          -d \
+          launcher.gcr.io/google/elasticsearch5 \
+          -Enetwork.host=0.0.0.0 \
+          -Etransport.tcp.port=9300 \
+          -Ehttp.port=9200 \
+          -Ediscovery.zen.ping.unicast.hosts=some-elasticsearch-master
+        ```
+
+        After few seconds, we can check that cluster is running invoking `http://localhost:9200/_cluster/health`.
 
 portReference:
   ports:

@@ -29,6 +29,8 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
     * [Connect and start using Elasticsearch](#connect-and-start-using-elasticsearch-docker)
   * [Configurations](#configurations-docker)
     * [Using configuration volume](#using-configuration-volume-docker)
+  * [Clustering](#clustering-docker)
+    * [Creating simple cluster](#creating-simple-cluster-docker)
 * [References](#references)
   * [Ports](#references-ports)
   * [Volumes](#references-volumes)
@@ -66,6 +68,8 @@ Internet with an external IP address. For more information, consult
 kubectl expose pod some-elasticsearch --name some-elasticsearch-9200 \
   --type LoadBalancer --port 9200 --protocol TCP
 ```
+
+Elasticsearch host requires configured enviroment. On Linux host please run `sysctl -w vm.max_map_count=262144`. For details please check [official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html).
 
 To retain Elasticsearch data across container restarts, see [Use a persistent data volume](#use-a-persistent-data-volume-kubernetes).
 
@@ -232,6 +236,8 @@ docker run \
   launcher.gcr.io/google/elasticsearch2
 ```
 
+Elasticsearch host requires configured enviroment. On Linux host please run `sysctl -w vm.max_map_count=262144`. For details please check [official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html).
+
 To retain Elasticsearch data across container restarts, see [Use a persistent data volume](#use-a-persistent-data-volume-docker).
 
 To configure your application, see [Configurations](#configurations-docker).
@@ -333,6 +339,67 @@ docker run \
 See [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html) on available configuration options.
 
 Also see [Volume reference](#references-volumes).
+
+## <a name="clustering-docker"></a>Clustering
+
+### <a name="creating-simple-cluster-docker"></a>Creating simple cluster
+
+In the following guide you will learn how to create simple two-node Elasticsearch cluster. This is only an example how to configure and link together containers, not a production ready configuration. For production ready configuration please refer to official documentation.
+
+We will need a master node, that will also serve as a gateway to our cluster. Single slave node will be attached to the master node.
+
+Use the following content for the `docker-compose.yml` file, then run `docker-compose up`.
+
+```yaml
+version: '2'
+services:
+  elasticsearch-master:
+    container_name: some-elasticsearch-master
+    image: launcher.gcr.io/google/elasticsearch2
+    ports:
+      - '9200:9200'
+    command:
+      - '--network.host=0.0.0.0'
+      - '--transport.tcp.port=9300'
+      - '--http.port=9200'
+  elasticsearch-slave:
+    container_name: some-elasticsearch-slave
+    image: launcher.gcr.io/google/elasticsearch2
+    command:
+      - '--network.host=0.0.0.0'
+      - '--transport.tcp.port=9300'
+      - '--http.port=9200'
+      - '--discovery.zen.ping.unicast.hosts=some-elasticsearch-master'
+    depends_on:
+      - elasticsearch-master
+```
+
+Or you can use `docker run` directly:
+
+```shell
+# elasticsearch-master
+docker run \
+  --name some-elasticsearch-master \
+  -p 9200:9200 \
+  -d \
+  launcher.gcr.io/google/elasticsearch2 \
+  --network.host=0.0.0.0 \
+  --transport.tcp.port=9300 \
+  --http.port=9200
+
+# elasticsearch-slave
+docker run \
+  --name some-elasticsearch-slave \
+  --link some-elasticsearch-master \
+  -d \
+  launcher.gcr.io/google/elasticsearch2 \
+  --network.host=0.0.0.0 \
+  --transport.tcp.port=9300 \
+  --http.port=9200 \
+  --discovery.zen.ping.unicast.hosts=some-elasticsearch-master
+```
+
+After few seconds, we can check that cluster is running invoking `http://localhost:9200/_cluster/health`.
 
 # <a name="references"></a>References
 
