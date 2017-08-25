@@ -1,9 +1,5 @@
 FROM gcr.io/google-appengine/openjdk
 
-# Get the list of packages from the base image.
-COPY download_source /tmp
-RUN /tmp/download_source blacklist-all-current
-
 # add gosu for easy step-down from root
 ENV GOSU_VERSION 1.10
 RUN set -x \
@@ -73,8 +69,3 @@ COPY docker-entrypoint.sh /
 EXPOSE 9200 9300
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["elasticsearch"]
-
-# Download source code for GPL packages.
-RUN /tmp/download_source exclude-sources /etc/apt/sources.list.d/elasticsearch.list \
-	&& /tmp/download_source download /usr/local/src \
-	&& rm /tmp/download_source
