@@ -1,10 +1,7 @@
-FROM {{ .From }}
-
-{{- $gosu := index .Packages "gosu" }}
-{{- $elasticsearch := index .Packages "elasticsearch" }}
+FROM gcr.io/google-appengine/openjdk
 
 # add gosu for easy step-down from root
-ENV GOSU_VERSION {{ $gosu.Version }}
+ENV GOSU_VERSION 1.10
 RUN set -x \
 	&& wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
 	&& wget -q -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
@@ -12,7 +9,7 @@ RUN set -x \
 	&& wget -q -O /usr/local/src/gosu.tar.gz "https://github.com/tianon/gosu/archive/$GOSU_VERSION.tar.gz" \
 # extract gosu binary and check signature
 	&& export GNUPGHOME="$(mktemp -d)" \
-	&& gpg --keyserver pgp.mit.edu --recv-keys {{ $gosu.Gpg }} \
+	&& gpg --keyserver pgp.mit.edu --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
 	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
 	&& rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
 	&& chmod +x /usr/local/bin/gosu \
@@ -21,7 +18,7 @@ RUN set -x \
 # Install Elastic Search
 RUN set -ex; \
 # https://artifacts.elastic.co/GPG-KEY-elasticsearch
-	key='{{ $elasticsearch.Gpg }}'; \
+	key='46095ACC8548582C1A2699A9D27D666CD88E42B4'; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --keyserver pgp.mit.edu --recv-keys "$key"; \
 	gpg --export "$key" > /etc/apt/trusted.gpg.d/elastic.gpg; \
@@ -31,19 +28,13 @@ RUN set -ex; \
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html
 RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends apt-transport-https && rm -rf /var/lib/apt/lists/* \
-{{- if (eq .Repo "elasticsearch6") }}
 	&& echo 'deb https://artifacts.elastic.co/packages/6.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
-{{- else if (eq .Repo "elasticsearch5") }}
-	&& echo 'deb https://artifacts.elastic.co/packages/5.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
-{{- else }}
-	&& echo 'deb http://packages.elasticsearch.org/elasticsearch/2.x/debian stable main' > /etc/apt/sources.list.d/elasticsearch.list
-{{- end }}
 
-ENV ELASTICSEARCH_VERSION {{ $elasticsearch.Version }}
-ENV ELASTICSEARCH_DEB_VERSION {{ $elasticsearch.Version }}
+ENV ELASTICSEARCH_VERSION 6.0.0
+ENV ELASTICSEARCH_DEB_VERSION 6.0.0
 
 # copy source code
-RUN wget -q https://github.com/elastic/elasticsearch/archive/v{{ $elasticsearch.Version }}.tar.gz -O /usr/local/src/elasticsearch-source-v{{ $elasticsearch.Version }}.tar.gz
+RUN wget -q https://github.com/elastic/elasticsearch/archive/v6.0.0.tar.gz -O /usr/local/src/elasticsearch-source-v6.0.0.tar.gz
 
 RUN set -x \
 # don't allow the package to install its sysctl file (causes the install to fail)
