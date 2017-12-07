@@ -13,14 +13,14 @@
 # limitations under the License.
 
 setup:
-- command: [docker, run, --privileged=true, --name, some-elasticsearch, -d, '$IMAGE']
+- command: [docker, run, --privileged=true, --name, some-elasticsearch-$UNIQUE-id, -d, '$IMAGE']
 - command: [sleep, 30s]
 
 teardown:
-- command: [docker, stop, some-elasticsearch]
-- command: [docker, rm, some-elasticsearch]
+- command: [docker, stop, some-elasticsearch-$UNIQUE-id]
+- command: [docker, rm, some-elasticsearch-$UNIQUE-id]
 
-target: some-elasticsearch
+target: some-elasticsearch-$UNIQUE-id
 tests:
 - name: Check status
   command: [wget, -q, -O, -, 'http://localhost:9200/_cat/health?h=status']
