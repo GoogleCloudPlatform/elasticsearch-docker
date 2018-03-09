@@ -9,6 +9,7 @@ RUN set -x \
 	&& wget -q -O /usr/local/src/gosu.tar.gz "https://github.com/tianon/gosu/archive/$GOSU_VERSION.tar.gz" \
 # extract gosu binary and check signature
 	&& export GNUPGHOME="$(mktemp -d)" \
+	&& found='' \
 	&& for server in \
 		pool.sks-keyservers.net \
 		ha.pool.sks-keyservers.net \
@@ -20,8 +21,8 @@ RUN set -x \
 		hkp://p80.pool.sks-keyservers.net:80 \
 		hkp://keyserver.ubuntu.com:80 \
 	; do \
-		gpg --keyserver pgp.mit.edu --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-		&& export found="yes" && break; \
+		gpg --keyserver $server --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+		&& found="yes" && break; \
 	done; test -n "$found" \
 	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
 	&& rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
@@ -33,6 +34,7 @@ RUN set -ex; \
 # https://artifacts.elastic.co/GPG-KEY-elasticsearch
 	key='46095ACC8548582C1A2699A9D27D666CD88E42B4'; \
 	export GNUPGHOME="$(mktemp -d)"; \
+	found=''; \
 	for server in \
 		pool.sks-keyservers.net \
 		ha.pool.sks-keyservers.net \
