@@ -85,15 +85,24 @@ ENV PATH /usr/share/elasticsearch/bin:$PATH
 
 WORKDIR /usr/share/elasticsearch
 
+{{- if (eq .Repo "elasticsearch6") }}
+COPY config /etc/elasticsearch
+{{- else }}
 COPY config ./config
+{{- end }}
 
 RUN set -ex \
 	&& for path in \
 		./data \
 		./logs \
+{{- if (eq .Repo "elasticsearch6") }}
+		/etc/elasticsearch \
+		/etc/elasticsearch/scripts \
+{{- else }}
 		./config \
-		/usr/share/elasticsearch \
 		./config/scripts \
+{{- end }}
+		/usr/share/elasticsearch \
 	; do \
 		mkdir -p "$path"; \
 		chown -R elasticsearch:elasticsearch "$path"; \

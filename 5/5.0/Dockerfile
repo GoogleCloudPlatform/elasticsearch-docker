@@ -75,7 +75,6 @@ RUN set -x \
 ENV PATH /usr/share/elasticsearch/bin:$PATH
 
 WORKDIR /usr/share/elasticsearch
-
 COPY config ./config
 
 RUN set -ex \
@@ -83,8 +82,8 @@ RUN set -ex \
 		./data \
 		./logs \
 		./config \
-		/usr/share/elasticsearch \
 		./config/scripts \
+		/usr/share/elasticsearch \
 	; do \
 		mkdir -p "$path"; \
 		chown -R elasticsearch:elasticsearch "$path"; \

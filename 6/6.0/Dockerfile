@@ -75,16 +75,15 @@ RUN set -x \
 ENV PATH /usr/share/elasticsearch/bin:$PATH
 
 WORKDIR /usr/share/elasticsearch
-
-COPY config ./config
+COPY config /etc/elasticsearch
 
 RUN set -ex \
 	&& for path in \
 		./data \
 		./logs \
-		./config \
+		/etc/elasticsearch \
+		/etc/elasticsearch/scripts \
 		/usr/share/elasticsearch \
-		./config/scripts \
 	; do \
 		mkdir -p "$path"; \
 		chown -R elasticsearch:elasticsearch "$path"; \
