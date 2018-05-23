@@ -1,5 +1,15 @@
 FROM gcr.io/google-appengine/openjdk
 
+RUN set -ex; \
+	if ! command -v gpg > /dev/null; then \
+		apt-get update; \
+		apt-get install -y --no-install-recommends \
+			gnupg \
+			dirmngr \
+		; \
+		rm -rf /var/lib/apt/lists/*; \
+	fi
+
 # add gosu for easy step-down from root
 ENV GOSU_VERSION 1.10
 RUN set -x \
@@ -25,7 +35,7 @@ RUN set -x \
 		&& found="yes" && break; \
 	done; test -n "$found" \
 	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
-	&& rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
+	&& rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc \
 	&& chmod +x /usr/local/bin/gosu \
 	&& gosu nobody true
 
@@ -50,7 +60,7 @@ RUN set -ex; \
 			&& found="yes" && break; \
 	done; test -n "$found"; \
 	gpg --export "$key" > /etc/apt/trusted.gpg.d/elastic.gpg; \
-	rm -r "$GNUPGHOME"; \
+	rm -rf "$GNUPGHOME"; \
 	apt-key list
 
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html
