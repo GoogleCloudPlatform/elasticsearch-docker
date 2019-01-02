@@ -20,18 +20,29 @@ _variables:
   gpg: &gpg 46095ACC8548582C1A2699A9D27D666CD88E42B4
 
 versions:
-  - dir: '6/6.4'
+  - dir: '6/6.5'
     repo: elasticsearch6
     tags:
-      - '6.4.2'
-      - '6.4'
+      - '6.5.4'
+      - '6.5'
       - 'latest'
     from: *from
     packages:
       gosu: *gosu
       elasticsearch:
         gpg: *gpg
-        version: '6.4.2'
+        version: '6.5.4'
+  - dir: '6/6.4'
+    repo: elasticsearch6
+    tags:
+      - '6.4.3'
+      - '6.4'
+    from: *from
+    packages:
+      gosu: *gosu
+      elasticsearch:
+        gpg: *gpg
+        version: '6.4.3'
   - dir: '6/6.3'
     repo: elasticsearch6
     tags:
@@ -79,7 +90,7 @@ versions:
   - dir: '5/5.6'
     repo: elasticsearch5
     tags:
-      - '5.6.12'
+      - '5.6.14'
       - '5.6'
       - 'latest'
     from: *from
@@ -87,93 +98,4 @@ versions:
       gosu: *gosu
       elasticsearch:
         gpg: *gpg
-        version: '5.6.12'
-  - dir: '5/5.5'
-    repo: elasticsearch5
-    tags:
-      - '5.5.3'
-      - '5.5'
-    from: *from
-    packages:
-      gosu: *gosu
-      elasticsearch:
-        gpg: *gpg
-        version: '5.5.3'
-  - dir: '5/5.4'
-    repo: elasticsearch5
-    tags:
-      - '5.4.3'
-      - '5.4'
-    from: *from
-    packages:
-      gosu: *gosu
-      elasticsearch:
-        gpg: *gpg
-        version: '5.4.3'
-  - dir: '5/5.3'
-    repo: elasticsearch5
-    tags:
-      - '5.3.3'
-      - '5.3'
-    from: *from
-    packages:
-      gosu: *gosu
-      elasticsearch:
-        gpg: *gpg
-        version: '5.3.3'
-  - dir: '5/5.2'
-    repo: elasticsearch5
-    tags:
-      - '5.2.2'
-      - '5.2'
-    from: *from
-    packages:
-      gosu: *gosu
-      elasticsearch:
-        gpg: *gpg
-        version: '5.2.2'
-  - dir: '5/5.1'
-    repo: elasticsearch5
-    tags:
-      - '5.1.2'
-      - '5.1'
-    from: *from
-    packages:
-      gosu: *gosu
-      elasticsearch:
-        gpg: *gpg
-        version: '5.1.2'
-  - dir: '5/5.0'
-    repo: elasticsearch5
-    tags:
-      - '5.0.2'
-      - '5.0'
-    from: *from
-    packages:
-      gosu: *gosu
-      elasticsearch:
-        gpg: *gpg
-        version: '5.0.2'
-  - dir: '2/2.4'
-    repo: elasticsearch2
-    tags:
-      - '2.4.6'
-      - '2.4'
-      - 'latest'
-    from: *from
-    packages:
-      gosu: *gosu
-      elasticsearch:
-        gpg: *gpg
-        version: '2.4.6'
-  - dir: '2/2.3'
-    repo: elasticsearch2
-    tags:
-      - '2.3.5'
-      - '2.3'
-    from: *from
-    packages:
-      gosu: *gosu
-      elasticsearch:
-        gpg: *gpg
-        version: '2.3.5'
+        version: '5.6.14'

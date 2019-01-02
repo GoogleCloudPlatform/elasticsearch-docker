@@ -31,10 +31,10 @@ RUN set -x \
 		hkp://p80.pool.sks-keyservers.net:80 \
 		hkp://keyserver.ubuntu.com:80 \
 	; do \
-		gpg --keyserver $server --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+		gpg --no-tty --keyserver $server --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
 		&& found="yes" && break; \
 	done; test -n "$found" \
-	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
+	&& gpg --no-tty --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
 	&& rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc \
 	&& chmod +x /usr/local/bin/gosu \
 	&& gosu nobody true
@@ -66,13 +66,13 @@ RUN set -ex; \
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html
 RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends apt-transport-https && rm -rf /var/lib/apt/lists/* \
-	&& echo 'deb https://artifacts.elastic.co/packages/5.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
+	&& echo 'deb https://artifacts.elastic.co/packages/6.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
 
-ENV ELASTICSEARCH_VERSION 5.5.3
-ENV ELASTICSEARCH_DEB_VERSION 5.5.3
+ENV ELASTICSEARCH_VERSION 6.5.4
+ENV ELASTICSEARCH_DEB_VERSION 6.5.4
 
 # copy source code
-RUN wget -q https://github.com/elastic/elasticsearch/archive/v5.5.3.tar.gz -O /usr/local/src/elasticsearch-source-v5.5.3.tar.gz
+RUN wget -q https://github.com/elastic/elasticsearch/archive/v6.5.4.tar.gz -O /usr/local/src/elasticsearch-source-v6.5.4.tar.gz
 
 RUN set -x \
 # don't allow the package to install its sysctl file (causes the install to fail)
@@ -85,14 +85,14 @@ RUN set -x \
 ENV PATH /usr/share/elasticsearch/bin:$PATH
 
 WORKDIR /usr/share/elasticsearch
-COPY config ./config
+COPY config /etc/elasticsearch
 
 RUN set -ex \
 	&& for path in \
 		./data \
 		./logs \
-		./config \
-		./config/scripts \
+		/etc/elasticsearch \
+		/etc/elasticsearch/scripts \
 		/usr/share/elasticsearch \
 	; do \
 		mkdir -p "$path"; \
