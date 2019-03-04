@@ -90,7 +90,7 @@ versions:
   - dir: '5/5.6'
     repo: elasticsearch5
     tags:
-      - '5.6.14'
+      - '5.6.15'
       - '5.6'
       - 'latest'
     from: *from
@@ -98,4 +98,4 @@ versions:
       gosu: *gosu
       elasticsearch:
         gpg: *gpg
-        version: '5.6.14'
+        version: '5.6.15'
