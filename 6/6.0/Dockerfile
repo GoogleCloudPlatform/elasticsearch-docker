@@ -12,6 +12,10 @@ RUN set -ex; \
 
 # add gosu for easy step-down from root
 ENV GOSU_VERSION 1.10
+
+# prometheus exporter
+ENV EXPORTER_VERSION 1.1.0rc1
+
 RUN set -x \
 	&& wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
 	&& wget -q -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
@@ -103,6 +107,19 @@ VOLUME /usr/share/elasticsearch/data
 
 COPY docker-entrypoint.sh /
 
-EXPOSE 9200 9300
+RUN set -ex \
+		&& cd / \
+		&& wget -q -O elasticsearch_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz https://github.com/justwatchcom/elasticsearch_exporter/releases/download/v${EXPORTER_VERSION}/elasticsearch_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
+		&& wget -q -O /usr/src/elasticsearch_exporter-v$EXPORTER_VERSION.tar.gz https://github.com/justwatchcom/elasticsearch_exporter/archive/v1.1.0rc1.tar.gz \
+		&& tar -xzf elasticsearch_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
+        && mv elasticsearch_exporter-${EXPORTER_VERSION}.linux-amd64 prometheus-exporter \
+		&& rm -f elasticsearch_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
+		&& mkdir -p /usr/share/doc/elasticsearch_exporter \
+		&& cp /prometheus-exporter/LICENSE /usr/share/doc/elasticsearch_exporter/LICENSE
+
+COPY licences/ /usr/share/doc/
+
+# 9114 prometheus exporter port
+EXPOSE 9200 9300 9114
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["elasticsearch"]
