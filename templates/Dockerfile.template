@@ -96,6 +96,17 @@ RUN set -x \
 	&& apt-get install -y --no-install-recommends "elasticsearch=$ELASTICSEARCH_DEB_VERSION" \
 	&& rm -rf /var/lib/apt/lists/*
 
+RUN set -ex \
+        && wget -q -O elasticsearch_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz https://github.com/justwatchcom/elasticsearch_exporter/releases/download/v${EXPORTER_VERSION}/elasticsearch_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
+        && wget -q -O /usr/src/elasticsearch_exporter-v$EXPORTER_VERSION.tar.gz https://github.com/justwatchcom/elasticsearch_exporter/archive/v${EXPORTER_VERSION}.tar.gz \
+        && tar -xzf elasticsearch_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
+        && mv elasticsearch_exporter-${EXPORTER_VERSION}.linux-amd64 prometheus-exporter \
+        && rm -f elasticsearch_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
+        && mkdir -p /usr/share/doc/elasticsearch_exporter \
+        && cp /prometheus-exporter/LICENSE /usr/share/doc/elasticsearch_exporter/LICENSE
+
+COPY licences/ /usr/share/doc/
+
 ENV PATH /usr/share/elasticsearch/bin:$PATH
 
 WORKDIR /usr/share/elasticsearch
@@ -127,19 +138,7 @@ VOLUME /usr/share/elasticsearch/data
 
 COPY docker-entrypoint.sh /
 
-RUN set -ex \
-		&& cd / \
-		&& wget -q -O elasticsearch_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz https://github.com/justwatchcom/elasticsearch_exporter/releases/download/v${EXPORTER_VERSION}/elasticsearch_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
-		&& wget -q -O /usr/src/elasticsearch_exporter-v$EXPORTER_VERSION.tar.gz https://github.com/justwatchcom/elasticsearch_exporter/archive/v1.1.0rc1.tar.gz \
-		&& tar -xzf elasticsearch_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
-        && mv elasticsearch_exporter-${EXPORTER_VERSION}.linux-amd64 prometheus-exporter \
-		&& rm -f elasticsearch_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
-		&& mkdir -p /usr/share/doc/elasticsearch_exporter \
-		&& cp /prometheus-exporter/LICENSE /usr/share/doc/elasticsearch_exporter/LICENSE
-
-COPY licences/ /usr/share/doc/
-
 # 9114 prometheus exporter port
-EXPOSE 9200 9300 9114
+EXPOSE 9114 9200 9300
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["elasticsearch"]
