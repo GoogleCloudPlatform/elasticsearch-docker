@@ -18,6 +18,8 @@ _variables:
     version: '1.10'
     gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
   gpg: &gpg 46095ACC8548582C1A2699A9D27D666CD88E42B4
+  exporter: &exporter
+    version: '1.1.0rc1'
 
 versions:
   - dir: '6/6.5'
@@ -29,6 +31,7 @@ versions:
     from: *from
     packages:
       gosu: *gosu
+      exporter: *exporter
       elasticsearch:
         gpg: *gpg
         version: '6.5.4'
@@ -40,6 +43,7 @@ versions:
     from: *from
     packages:
       gosu: *gosu
+      exporter: *exporter
       elasticsearch:
         gpg: *gpg
         version: '6.4.3'
@@ -51,6 +55,7 @@ versions:
     from: *from
     packages:
       gosu: *gosu
+      exporter: *exporter
       elasticsearch:
         gpg: *gpg
         version: '6.3.2'
@@ -62,6 +67,7 @@ versions:
     from: *from
     packages:
       gosu: *gosu
+      exporter: *exporter
       elasticsearch:
         gpg: *gpg
         version: '6.2.4'
@@ -73,6 +79,7 @@ versions:
     from: *from
     packages:
       gosu: *gosu
+      exporter: *exporter
       elasticsearch:
         gpg: *gpg
         version: '6.1.4'
@@ -84,6 +91,7 @@ versions:
     from: *from
     packages:
       gosu: *gosu
+      exporter: *exporter
       elasticsearch:
         gpg: *gpg
         version: '6.0.1'
@@ -96,6 +104,7 @@ versions:
     from: *from
     packages:
       gosu: *gosu
+      exporter: *exporter
       elasticsearch:
         gpg: *gpg
         version: '5.6.15'
