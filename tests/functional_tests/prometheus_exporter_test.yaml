@@ -24,7 +24,7 @@ teardown:
 target: some-elasticsearch-$UNIQUE-id
 tests:
 - name: Test Prometheus exporter
-  command: [wget, -q, -O, -, 'http://localhost:9108/metrics']
+  command: [wget, -q, -O, -, 'http://localhost:9114/metrics']
   expect:
     stdout:
       matches: '(?m)^elasticsearch_cluster_health_up 1$'

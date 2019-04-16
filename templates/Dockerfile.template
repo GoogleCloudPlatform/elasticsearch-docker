@@ -138,7 +138,7 @@ VOLUME /usr/share/elasticsearch/data
 
 COPY docker-entrypoint.sh /
 
-# 9108 prometheus exporter port
-EXPOSE 9108 9200 9300
+# 9114 prometheus exporter port
+EXPOSE 9114 9200 9300
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["elasticsearch"]
