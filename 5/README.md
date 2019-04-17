@@ -409,7 +409,7 @@ These are the ports exposed by the container image.
 
 | **Port** | **Description** |
 |:---------|:----------------|
-| TCP 9108 | Prometheus exporter port |
+| TCP 9114 | Prometheus exporter port |
 | TCP 9200 | Elasticsearch HTTP port. |
 | TCP 9300 | Elasticsearch default communication port. |
 

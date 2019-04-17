@@ -197,7 +197,7 @@ taskGroups:
 
 portReference:
   ports:
-  - port: '9108'
+  - port: '9114'
     description: Prometheus exporter port.
   - port: '9200'
     description: Elasticsearch HTTP port.
