@@ -70,13 +70,13 @@ RUN set -ex; \
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html
 RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends apt-transport-https && rm -rf /var/lib/apt/lists/* \
-	&& echo 'deb https://artifacts.elastic.co/packages/5.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
+	&& echo 'deb https://artifacts.elastic.co/packages/6.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
 
-ENV ELASTICSEARCH_VERSION 5.6.16
-ENV ELASTICSEARCH_DEB_VERSION 5.6.16
+ENV ELASTICSEARCH_VERSION 6.6.2
+ENV ELASTICSEARCH_DEB_VERSION 6.6.2
 
 # copy source code
-RUN wget -q https://github.com/elastic/elasticsearch/archive/v5.6.16.tar.gz -O /usr/local/src/elasticsearch-source-v5.6.16.tar.gz
+RUN wget -q https://github.com/elastic/elasticsearch/archive/v6.6.2.tar.gz -O /usr/local/src/elasticsearch-source-v6.6.2.tar.gz
 
 RUN set -x \
 # don't allow the package to install its sysctl file (causes the install to fail)
@@ -142,14 +142,14 @@ RUN /bin/bash -c 'set -ex \
 ENV PATH /usr/share/elasticsearch/bin:$PATH
 
 WORKDIR /usr/share/elasticsearch
-COPY config ./config
+COPY config /etc/elasticsearch
 
 RUN set -ex \
 	&& for path in \
 		./data \
 		./logs \
-		./config \
-		./config/scripts \
+		/etc/elasticsearch \
+		/etc/elasticsearch/scripts \
 		/usr/share/elasticsearch \
 	; do \
 		mkdir -p "$path"; \
