@@ -75,6 +75,8 @@ RUN set -x \
 ENV ELASTICSEARCH_VERSION 6.8.2
 ENV ELASTICSEARCH_DEB_VERSION 6.8.2
 
+ENV C2D_RELEASE=${ELASTICSEARCH_VERSION}
+
 # copy source code
 RUN wget -q https://github.com/elastic/elasticsearch/archive/v6.8.2.tar.gz -O /usr/local/src/elasticsearch-source-v6.8.2.tar.gz
 
@@ -155,6 +157,9 @@ RUN set -ex \
 		mkdir -p "$path"; \
 		chown -R elasticsearch:elasticsearch "$path"; \
 	done
+
+RUN test ${C2D_RELEASE} = $(elasticsearch --version | cut -d' ' -f 2 | grep -o -E '([0-9]+\.)([0-9]+\.)([0-9]+)') \
+         || { echo "Version check failed"; exit 1; }
 
 VOLUME /usr/share/elasticsearch/data
 
