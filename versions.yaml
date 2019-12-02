@@ -25,7 +25,7 @@ versions:
   - dir: '6/6.8'
     repo: elasticsearch6
     tags:
-      - '6.8.4'
+      - '6.8.5'
       - '6.8'
       - 'latest'
     from: *from
@@ -34,7 +34,7 @@ versions:
       exporter: *exporter
       elasticsearch:
         gpg: *gpg
-        version: '6.8.4'
+        version: '6.8.5'
   - dir: '6/6.7'
     repo: elasticsearch6
     tags:
