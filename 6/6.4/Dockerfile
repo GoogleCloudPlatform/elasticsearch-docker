@@ -14,7 +14,7 @@ RUN set -ex; \
 ENV GOSU_VERSION 1.10
 
 # prometheus exporter
-ENV EXPORTER_VERSION 1.1.0rc1
+ENV EXPORTER_VERSION 1.1.0
 
 RUN set -x \
 	&& wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
