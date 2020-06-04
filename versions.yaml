@@ -19,13 +19,13 @@ _variables:
     gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
   gpg: &gpg 46095ACC8548582C1A2699A9D27D666CD88E42B4
   exporter: &exporter
-    version: '1.1.0'
+    version: '1.1.0rc1'
 
 versions:
   - dir: '6/6.8'
     repo: elasticsearch6
     tags:
-      - '6.8.8'
+      - '6.8.10'
       - '6.8'
       - 'latest'
     from: *from
@@ -34,7 +34,7 @@ versions:
       exporter: *exporter
       elasticsearch:
         gpg: *gpg
-        version: '6.8.8'
+        version: '6.8.10'
   - dir: '6/6.7'
     repo: elasticsearch6
     tags:
