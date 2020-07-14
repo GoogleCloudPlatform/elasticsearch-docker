@@ -144,6 +144,7 @@ RUN /bin/bash -c 'set -ex \
 ENV PATH /usr/share/elasticsearch/bin:$PATH
 
 WORKDIR /usr/share/elasticsearch
+
 COPY config /etc/elasticsearch
 
 RUN set -ex \

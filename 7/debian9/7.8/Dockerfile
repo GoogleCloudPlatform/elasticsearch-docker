@@ -70,7 +70,7 @@ RUN set -ex; \
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html
 RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends apt-transport-https && rm -rf /var/lib/apt/lists/* \
-	&& echo 'deb http://packages.elasticsearch.org/elasticsearch/2.x/debian stable main' > /etc/apt/sources.list.d/elasticsearch.list
+	&& echo 'deb https://artifacts.elastic.co/packages/7.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
 
 ENV ELASTICSEARCH_VERSION 7.8.0
 ENV ELASTICSEARCH_DEB_VERSION 7.8.0
@@ -144,14 +144,15 @@ RUN /bin/bash -c 'set -ex \
 ENV PATH /usr/share/elasticsearch/bin:$PATH
 
 WORKDIR /usr/share/elasticsearch
-COPY config ./config
+
+COPY config /etc/elasticsearch
 
 RUN set -ex \
 	&& for path in \
 		./data \
 		./logs \
-		./config \
-		./config/scripts \
+		/etc/elasticsearch \
+		/etc/elasticsearch/scripts \
 		/usr/share/elasticsearch \
 	; do \
 		mkdir -p "$path"; \

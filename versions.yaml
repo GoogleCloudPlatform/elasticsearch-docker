@@ -21,6 +21,7 @@ versions:
   packages:
     elasticsearch:
       gpg: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+      major: '7'
       version: 7.8.0
     exporter:
       version: 1.1.0
@@ -41,6 +42,7 @@ versions:
   packages:
     elasticsearch:
       gpg: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+      major: '6'
       version: 6.8.10
     exporter:
       version: 1.1.0
@@ -61,6 +63,7 @@ versions:
   packages:
     elasticsearch:
       gpg: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+      major: '6'
       version: 6.3.2
     exporter:
       version: 1.1.0
