@@ -11,10 +11,10 @@ RUN set -ex; \
 	fi
 
 # add gosu for easy step-down from root
-ENV GOSU_VERSION 1.10
+ENV GOSU_VERSION 1.11
 
 # prometheus exporter
-ENV EXPORTER_VERSION 1.1.0rc1
+ENV EXPORTER_VERSION 1.1.0
 
 RUN set -x \
 	&& wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
@@ -72,13 +72,13 @@ RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends apt-transport-https && rm -rf /var/lib/apt/lists/* \
 	&& echo 'deb https://artifacts.elastic.co/packages/6.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
 
-ENV ELASTICSEARCH_VERSION 6.8.10
-ENV ELASTICSEARCH_DEB_VERSION 6.8.10
+ENV ELASTICSEARCH_VERSION 6.3.2
+ENV ELASTICSEARCH_DEB_VERSION 6.3.2
 
 ENV C2D_RELEASE=${ELASTICSEARCH_VERSION}
 
 # copy source code
-RUN wget -q https://github.com/elastic/elasticsearch/archive/v6.8.10.tar.gz -O /usr/local/src/elasticsearch-source-v6.8.10.tar.gz
+RUN wget -q https://github.com/elastic/elasticsearch/archive/v6.3.2.tar.gz -O /usr/local/src/elasticsearch-source-v6.3.2.tar.gz
 
 RUN set -x \
 # don't allow the package to install its sysctl file (causes the install to fail)
