@@ -74,13 +74,7 @@ RUN set -ex; \
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html
 RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends apt-transport-https && rm -rf /var/lib/apt/lists/* \
-{{- if (eq .Repo "elasticsearch6") }}
-	&& echo 'deb https://artifacts.elastic.co/packages/6.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
-{{- else if (eq .Repo "elasticsearch5") }}
-	&& echo 'deb https://artifacts.elastic.co/packages/5.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
-{{- else }}
-	&& echo 'deb http://packages.elasticsearch.org/elasticsearch/2.x/debian stable main' > /etc/apt/sources.list.d/elasticsearch.list
-{{- end }}
+	&& echo 'deb https://artifacts.elastic.co/packages/{{ $elasticsearch.Major}}.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
 
 ENV ELASTICSEARCH_VERSION {{ $elasticsearch.Version }}
 ENV ELASTICSEARCH_DEB_VERSION {{ $elasticsearch.Version }}
@@ -155,23 +149,14 @@ ENV PATH /usr/share/elasticsearch/bin:$PATH
 
 WORKDIR /usr/share/elasticsearch
 
-{{- if (eq .Repo "elasticsearch6") }}
 COPY config /etc/elasticsearch
-{{- else }}
-COPY config ./config
-{{- end }}
 
 RUN set -ex \
 	&& for path in \
 		./data \
 		./logs \
-{{- if (eq .Repo "elasticsearch6") }}
 		/etc/elasticsearch \
 		/etc/elasticsearch/scripts \
-{{- else }}
-		./config \
-		./config/scripts \
-{{- end }}
 		/usr/share/elasticsearch \
 	; do \
 		mkdir -p "$path"; \
