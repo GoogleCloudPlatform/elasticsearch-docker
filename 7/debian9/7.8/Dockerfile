@@ -11,10 +11,10 @@ RUN set -ex; \
 	fi
 
 # add gosu for easy step-down from root
-ENV GOSU_VERSION 1.10
+ENV GOSU_VERSION 1.11
 
 # prometheus exporter
-ENV EXPORTER_VERSION 1.1.0rc1
+ENV EXPORTER_VERSION 1.1.0
 
 RUN set -x \
 	&& wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
@@ -70,15 +70,15 @@ RUN set -ex; \
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html
 RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends apt-transport-https && rm -rf /var/lib/apt/lists/* \
-	&& echo 'deb https://artifacts.elastic.co/packages/6.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
+	&& echo 'deb https://artifacts.elastic.co/packages/7.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
 
-ENV ELASTICSEARCH_VERSION 6.4.3
-ENV ELASTICSEARCH_DEB_VERSION 6.4.3
+ENV ELASTICSEARCH_VERSION 7.8.0
+ENV ELASTICSEARCH_DEB_VERSION 7.8.0
 
 ENV C2D_RELEASE=${ELASTICSEARCH_VERSION}
 
 # copy source code
-RUN wget -q https://github.com/elastic/elasticsearch/archive/v6.4.3.tar.gz -O /usr/local/src/elasticsearch-source-v6.4.3.tar.gz
+RUN wget -q https://github.com/elastic/elasticsearch/archive/v7.8.0.tar.gz -O /usr/local/src/elasticsearch-source-v7.8.0.tar.gz
 
 RUN set -x \
 # don't allow the package to install its sysctl file (causes the install to fail)
@@ -144,6 +144,7 @@ RUN /bin/bash -c 'set -ex \
 ENV PATH /usr/share/elasticsearch/bin:$PATH
 
 WORKDIR /usr/share/elasticsearch
+
 COPY config /etc/elasticsearch
 
 RUN set -ex \

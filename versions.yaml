@@ -1,10 +1,10 @@
-# Copyright 2019 Google Inc.
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,86 +12,68 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-_variables:
-  from: &from gcr.io/google-appengine/openjdk
-  gosu: &gosu
-    version: '1.10'
-    gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
-  gpg: &gpg 46095ACC8548582C1A2699A9D27D666CD88E42B4
-  exporter: &exporter
-    version: '1.1.0rc1'
 
+cloudbuild:
+  enable_parallel: false
 versions:
-  - dir: '6/6.8'
-    repo: elasticsearch6
-    tags:
-      - '6.8.10'
-      - '6.8'
-      - 'latest'
-    from: *from
-    packages:
-      gosu: *gosu
-      exporter: *exporter
-      elasticsearch:
-        gpg: *gpg
-        version: '6.8.10'
-  - dir: '6/6.7'
-    repo: elasticsearch6
-    tags:
-      - '6.7.2'
-      - '6.7'
-    from: *from
-    packages:
-      gosu: *gosu
-      exporter: *exporter
-      elasticsearch:
-        gpg: *gpg
-        version: '6.7.2'
-  - dir: '6/6.6'
-    repo: elasticsearch6
-    tags:
-      - '6.6.2'
-      - '6.6'
-    from: *from
-    packages:
-      gosu: *gosu
-      exporter: *exporter
-      elasticsearch:
-        gpg: *gpg
-        version: '6.6.2'
-  - dir: '6/6.5'
-    repo: elasticsearch6
-    tags:
-      - '6.5.4'
-      - '6.5'
-    from: *from
-    packages:
-      gosu: *gosu
-      exporter: *exporter
-      elasticsearch:
-        gpg: *gpg
-        version: '6.5.4'
-  - dir: '6/6.4'
-    repo: elasticsearch6
-    tags:
-      - '6.4.3'
-      - '6.4'
-    from: *from
-    packages:
-      gosu: *gosu
-      exporter: *exporter
-      elasticsearch:
-        gpg: *gpg
-        version: '6.4.3'
-  - dir: '6/6.3'
-    repo: elasticsearch6
-    tags:
-      - '6.3.2'
-      - '6.3'
-    from: *from
-    packages:
-      gosu: *gosu
-      exporter: *exporter
-      elasticsearch:
-        gpg: *gpg
-        version: '6.3.2'
+- dir: 7/debian9/7.8
+  from: gcr.io/google-appengine/openjdk
+  packages:
+    elasticsearch:
+      gpg: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+      major: '7'
+      version: 7.8.0
+    exporter:
+      version: 1.1.0
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.11'
+  repo: elasticsearch7
+  tags:
+  - 7.8.0-debian9
+  - 7.8-debian9
+  - 7-debian9
+  - 7.8.0
+  - '7.8'
+  - '7'
+  - latest
+- dir: 6/debian9/6.8
+  from: gcr.io/google-appengine/openjdk
+  packages:
+    elasticsearch:
+      gpg: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+      major: '6'
+      version: 6.8.10
+    exporter:
+      version: 1.1.0
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.11'
+  repo: elasticsearch6
+  tags:
+  - 6.8.10-debian9
+  - 6.8-debian9
+  - 6-debian9
+  - 6.8.10
+  - '6.8'
+  - '6'
+  - latest
+- dir: 6/debian9/6.3
+  from: gcr.io/google-appengine/openjdk
+  packages:
+    elasticsearch:
+      gpg: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+      major: '6'
+      version: 6.3.2
+    exporter:
+      version: 1.1.0
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.11'
+  repo: elasticsearch6
+  tags:
+  - 6.3.2-debian9
+  - 6.3-debian9
+  - 6.3.2
+  - '6.3'
+

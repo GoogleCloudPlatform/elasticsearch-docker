@@ -11,10 +11,10 @@ RUN set -ex; \
 	fi
 
 # add gosu for easy step-down from root
-ENV GOSU_VERSION 1.10
+ENV GOSU_VERSION 1.11
 
 # prometheus exporter
-ENV EXPORTER_VERSION 1.1.0rc1
+ENV EXPORTER_VERSION 1.1.0
 
 RUN set -x \
 	&& wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
@@ -144,6 +144,7 @@ RUN /bin/bash -c 'set -ex \
 ENV PATH /usr/share/elasticsearch/bin:$PATH
 
 WORKDIR /usr/share/elasticsearch
+
 COPY config /etc/elasticsearch
 
 RUN set -ex \
