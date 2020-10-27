@@ -15,7 +15,7 @@
 setup:
 - command: [sudo, sysctl, -w, vm.max_map_count=262144]
 - command: [docker, run, --privileged=true, --name, some-elasticsearch-$UNIQUE-id, -d, '$IMAGE']
-- command: [sleep, 30s]
+- command: [sleep, 60s]
 
 teardown:
 - command: [docker, stop, some-elasticsearch-$UNIQUE-id]
