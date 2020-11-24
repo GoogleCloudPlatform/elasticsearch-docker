@@ -16,13 +16,13 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 7/debian9/7.9
+- dir: 7/debian9/7.10
   from: gcr.io/google-appengine/openjdk
   packages:
     elasticsearch:
       gpg: 46095ACC8548582C1A2699A9D27D666CD88E42B4
       major: '7'
-      version: 7.9.3
+      version: 7.10.0
     exporter:
       version: 1.1.0
     gosu:
@@ -30,11 +30,11 @@ versions:
       version: '1.11'
   repo: elasticsearch7
   tags:
-  - 7.9.3-debian9
-  - 7.9-debian9
+  - 7.10.0-debian9
+  - 7.10-debian9
   - 7-debian9
-  - 7.9.3
-  - '7.9'
+  - 7.10.0
+  - '7.10'
   - '7'
   - latest
 - dir: 6/debian9/6.8
