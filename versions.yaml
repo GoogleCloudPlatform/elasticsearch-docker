@@ -22,7 +22,7 @@ versions:
     elasticsearch:
       gpg: 46095ACC8548582C1A2699A9D27D666CD88E42B4
       major: '7'
-      version: 7.10.0
+      version: 7.10.1
     exporter:
       version: 1.1.0
     gosu:
@@ -30,10 +30,10 @@ versions:
       version: '1.11'
   repo: elasticsearch7
   tags:
-  - 7.10.0-debian9
+  - 7.10.1-debian9
   - 7.10-debian9
   - 7-debian9
-  - 7.10.0
+  - 7.10.1
   - '7.10'
   - '7'
   - latest
@@ -58,3 +58,22 @@ versions:
   - '6.8'
   - '6'
   - latest
+- dir: 6/debian9/6.3
+  from: gcr.io/google-appengine/openjdk
+  packages:
+    elasticsearch:
+      gpg: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+      major: '6'
+      version: 6.3.2
+    exporter:
+      version: 1.1.0
+    gosu:
+      gpg: B42F6819007F00F88E364FD4036A9C25BF357DD4
+      version: '1.11'
+  repo: elasticsearch6
+  tags:
+  - 6.3.2-debian9
+  - 6.3-debian9
+  - 6.3.2
+  - '6.3'
+
