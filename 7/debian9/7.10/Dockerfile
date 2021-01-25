@@ -72,13 +72,13 @@ RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends apt-transport-https && rm -rf /var/lib/apt/lists/* \
 	&& echo 'deb https://artifacts.elastic.co/packages/7.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
 
-ENV ELASTICSEARCH_VERSION 7.10.1
-ENV ELASTICSEARCH_DEB_VERSION 7.10.1
+ENV ELASTICSEARCH_VERSION 7.10.2
+ENV ELASTICSEARCH_DEB_VERSION 7.10.2
 
 ENV C2D_RELEASE=${ELASTICSEARCH_VERSION}
 
 # copy source code
-RUN wget -q https://github.com/elastic/elasticsearch/archive/v7.10.1.tar.gz -O /usr/local/src/elasticsearch-source-v7.10.1.tar.gz
+RUN wget -q https://github.com/elastic/elasticsearch/archive/v7.10.2.tar.gz -O /usr/local/src/elasticsearch-source-v7.10.2.tar.gz
 
 RUN set -x \
 # don't allow the package to install its sysctl file (causes the install to fail)
