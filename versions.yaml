@@ -22,7 +22,7 @@ versions:
     elasticsearch:
       gpg: 46095ACC8548582C1A2699A9D27D666CD88E42B4
       major: '7'
-      version: 7.11.0
+      version: 7.11.1
     exporter:
       version: 1.1.0
     gosu:
@@ -30,10 +30,10 @@ versions:
       version: '1.11'
   repo: elasticsearch7
   tags:
-  - 7.11.0-debian9
+  - 7.11.1-debian9
   - 7.11-debian9
   - 7-debian9
-  - 7.11.0
+  - 7.11.1
   - '7.11'
   - '7'
   - latest
