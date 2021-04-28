@@ -153,7 +153,7 @@ apt-get update && apt-get install -y curl
 We can get test data into Elasticsearch using a HTTP PUT request. This will populate Elasticsearch with test data.
 
 ```
-curl -XPUT http://localhost:9200/estest/test/1 -d \
+curl -H "Content-Type: application/json" -XPUT http://localhost:9200/estest/test/1 -d \
 '{
    "name" : "Elasticsearch Test",
    "Description": "This is just a test"
