@@ -14,12 +14,12 @@ This is not an official Google product.
 
 This image contains an installation Elasticsearch
 
-For more information, see the [Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/elasticsearch6).
+For more information, see the [Official Image Marketplace Page](https://console.cloud.google.com/marketplace/product/google/elasticsearch7).
 
 Pull command (first install [gcloud](https://cloud.google.com/sdk/downloads)):
 
 ```shell
-gcloud auth configure-docker && docker -- pull marketplace.gcr.io/google/elasticsearch6
+gcloud auth configure-docker && docker -- pull marketplace.gcr.io/google/elasticsearch7
 ```
 Dockerfile for this image can be found [here](https://github.com/ekorolevich/elasticsearch-docker/tree/master/7/debian9/7.10)
 
@@ -67,7 +67,7 @@ metadata:
     name: some-elasticsearch
 spec:
   containers:
-    - image: marketplace.gcr.io/google/elasticsearch6
+    - image: marketplace.gcr.io/google/elasticsearch7
       name: elasticsearch
 ```
 
@@ -102,7 +102,7 @@ metadata:
     name: some-elasticsearch
 spec:
   containers:
-    - image: marketplace.gcr.io/google/elasticsearch6
+    - image: marketplace.gcr.io/google/elasticsearch7
       name: elasticsearch
       volumeMounts:
         - name: elasticsearchdata
@@ -192,7 +192,7 @@ metadata:
     name: some-elasticsearch
 spec:
   containers:
-    - image: marketplace.gcr.io/google/elasticsearch6
+    - image: marketplace.gcr.io/google/elasticsearch7
       name: elasticsearch
       volumeMounts:
         - name: elasticsearchconfig
@@ -233,7 +233,7 @@ version: '2'
 services:
   elasticsearch:
     container_name: some-elasticsearch
-    image: marketplace.gcr.io/google/elasticsearch6
+    image: marketplace.gcr.io/google/elasticsearch7
     ports:
       - '9200:9200'
 ```
@@ -245,7 +245,7 @@ docker run \
   --name some-elasticsearch \
   -p 9200:9200 \
   -d \
-  marketplace.gcr.io/google/elasticsearch6
+  marketplace.gcr.io/google/elasticsearch7
 ```
 
 Elasticsearch host requires configured enviroment. On Linux host please run `sysctl -w vm.max_map_count=262144`. For details please check [official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html).
@@ -267,7 +267,7 @@ version: '2'
 services:
   elasticsearch:
     container_name: some-elasticsearch
-    image: marketplace.gcr.io/google/elasticsearch6
+    image: marketplace.gcr.io/google/elasticsearch7
     ports:
       - '9200:9200'
     volumes:
@@ -330,7 +330,7 @@ version: '2'
 services:
   elasticsearch:
     container_name: some-elasticsearch
-    image: marketplace.gcr.io/google/elasticsearch6
+    image: marketplace.gcr.io/google/elasticsearch7
     ports:
       - '9200:9200'
     volumes:
@@ -345,7 +345,7 @@ docker run \
   -p 9200:9200 \
   -v /path/to/your/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml \
   -d \
-  marketplace.gcr.io/google/elasticsearch6
+  marketplace.gcr.io/google/elasticsearch7
 ```
 
 See [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html) on available configuration options.
@@ -367,7 +367,7 @@ version: '2'
 services:
   elasticsearch-master:
     container_name: some-elasticsearch-master
-    image: marketplace.gcr.io/google/elasticsearch6
+    image: marketplace.gcr.io/google/elasticsearch7
     ports:
       - '9200:9200'
     command:
@@ -376,7 +376,7 @@ services:
       - '-Ehttp.port=9200'
   elasticsearch-agent:
     container_name: some-elasticsearch-agent
-    image: marketplace.gcr.io/google/elasticsearch6
+    image: marketplace.gcr.io/google/elasticsearch7
     command:
       - '-Enetwork.host=0.0.0.0'
       - '-Etransport.tcp.port=9300'
@@ -394,7 +394,7 @@ docker run \
   --name some-elasticsearch-master \
   -p 9200:9200 \
   -d \
-  marketplace.gcr.io/google/elasticsearch6 \
+  marketplace.gcr.io/google/elasticsearch7 \
   -Enetwork.host=0.0.0.0 \
   -Etransport.tcp.port=9300 \
   -Ehttp.port=9200
@@ -404,7 +404,7 @@ docker run \
   --name some-elasticsearch-agent \
   --link some-elasticsearch-master \
   -d \
-  marketplace.gcr.io/google/elasticsearch6 \
+  marketplace.gcr.io/google/elasticsearch7 \
   -Enetwork.host=0.0.0.0 \
   -Etransport.tcp.port=9300 \
   -Ehttp.port=9200 \
