@@ -19,14 +19,10 @@ For more information, see the [Official Image Marketplace Page](https://console.
 Pull command (first install [gcloud](https://cloud.google.com/sdk/downloads)):
 
 ```shell
-gcloud docker -- pull marketplace.gcr.io/google/elasticsearch6
+gcloud auth configure-docker && docker -- pull marketplace.gcr.io/google/elasticsearch6
 ```
-WARNING: gcloud docker will not be supported for Docker client versions above 18.03.
+Dockerfile for this image can be found [here](https://github.com/ekorolevich/elasticsearch-docker/tree/master/7/debian9/7.10)
 
-As an alternative, use ```gcloud auth configure-docker``` to configure docker to
-use gcloud as a credential helper, then use docker as you would for non-GCR
-registries, e.g.  ``` docker -- pull marketplace.gcr.io/google/elasticsearch6 ```. Add
- ``` --verbosity=error ``` to silence this warning: ``` gcloud docker --verbosity=error -- pull marketplace.gcr.io/google/elasticsearch6```.
 
 # <a name="table-of-contents"></a>Table of Contents
 * [Using Kubernetes](#using-kubernetes)
