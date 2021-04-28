@@ -25,7 +25,7 @@ WARNING: gcloud docker will not be supported for Docker client versions above 18
 
 As an alternative, use ```gcloud auth configure-docker``` to configure docker to
 use gcloud as a credential helper, then use docker as you would for non-GCR
-registries, e.g.  ``` docker pull gcr.io/project-id/my-image ```. Add
+registries, e.g.  ``` docker -- pull marketplace.gcr.io/google/elasticsearch6 ```. Add
  ``` --verbosity=error ``` to silence this warning: ``` gcloud docker --verbosity=error -- pull gcr.io/project-id/my-image```.
 
 # <a name="table-of-contents"></a>Table of Contents
