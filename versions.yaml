@@ -55,7 +55,7 @@ versions:
   - 7.10-debian9
   - 7.10.2
   - '7.10'
-  - dir: 6/debian9/6.8
+- dir: 6/debian9/6.8
   from: gcr.io/google-appengine/openjdk
   packages:
     elasticsearch:
@@ -76,3 +76,4 @@ versions:
   - '6.8'
   - '6'
   - latest
+
