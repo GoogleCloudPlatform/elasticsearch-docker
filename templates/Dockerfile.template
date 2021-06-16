@@ -123,11 +123,11 @@ RUN /bin/bash -c 'set -ex \
            'prometheus/procfs') && \
 	mkdir -pv "$dir_prefix/kingpin.v2" && \
 	cd $dir_prefix/kingpin.v2 && \
-	wget -q https://raw.githubusercontent.com/justwatchcom/elasticsearch_exporter/master/vendor/gopkg.in/alecthomas/kingpin.v2/COPYING && \
+	wget -q https://gopkg.in/alecthomas/kingpin.v2/COPYING && \
 	cd - && \
 	mkdir -p $dir_prefix/prometheus/common && \
 	cd $dir_prefix/prometheus/common && \
-	wget -q $url_prefix/prometheus/common/LICENSE && \
+	wget -q https://github.com/prometheus/common/blob/main/LICENSE && \
 	cd - && \
 	for d in ${license_dir[@]}; do \
 	  mkdir -p $dir_prefix/$d && \
