@@ -123,7 +123,7 @@ RUN /bin/bash -c 'set -ex \
            'prometheus/procfs') && \
 	mkdir -pv "$dir_prefix/kingpin.v2" && \
 	cd $dir_prefix/kingpin.v2 && \
-	wget -q https://raw.githubusercontent.com/alecthomas/kingpin/v2.2.6/COPYING && \
+	wget -q https://raw.githubusercontent.com/alecthomas/kingpin/master/COPYING && \
 	cd - && \
 	mkdir -p $dir_prefix/prometheus/common && \
 	cd $dir_prefix/prometheus/common && \
