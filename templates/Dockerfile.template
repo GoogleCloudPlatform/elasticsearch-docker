@@ -105,13 +105,13 @@ COPY licenses-sha256 /
 RUN /bin/bash -c 'set -ex \
 	OLDPWD=$(pwd) && \
 	dir_prefix='/usr/share/doc' && \
-	url_prefix='https://raw.githubusercontent.com/justwatchcom/elasticsearch_exporter/master/vendor/github.com' && \
-	url_suffix=('prometheus/procfs/LICENSE' \
-           'prometheus/common/internal/bitbucket.org/ww/goautoneg/README.txt' 'prometheus/client_model/LICENSE' \
-           'prometheus/client_golang/LICENSE' 'matttproud/golang_protobuf_extensions/LICENSE' \
-           'kr/logfmt/Readme' 'imdario/mergo/LICENSE' 'golang/protobuf/LICENSE' \
-           'go-stack/stack/LICENSE.md' 'go-logfmt/logfmt/LICENSE' 'go-kit/kit/LICENSE' 'blang/semver/LICENSE' \
-           'beorn7/perks/LICENSE' 'alecthomas/units/COPYING' 'alecthomas/template/LICENSE') && \
+	url_prefix='https://raw.githubusercontent.com' && \
+	url_suffix=('prometheus/procfs/master/LICENSE' \
+           'prometheus/common/main/internal/bitbucket.org/ww/goautoneg/README.txt' 'prometheus/client_model/master/LICENSE' \
+           'prometheus/client_golang/master/LICENSE' 'matttproud/golang_protobuf_extensions/master/LICENSE' \
+           'kr/logfmt/main/Readme' 'imdario/mergo/master/LICENSE' 'golang/protobuf/master/LICENSE' \
+           'go-stack/stack/master/LICENSE.md' 'go-logfmt/logfmt/master/LICENSE' 'go-kit/kit/master/LICENSE' 'blang/semver/master/LICENSE' \
+           'beorn7/perks/master/LICENSE' 'alecthomas/units/master/COPYING' 'alecthomas/template/master/LICENSE') && \
 	license_volume=${#url_suffix[@]} && \
 	license_dir=('alecthomas/template' 'alecthomas/units' \
            'beorn7/perks' 'blang/semver' \
@@ -119,15 +119,15 @@ RUN /bin/bash -c 'set -ex \
            'go-stack/stack' 'imdario/mergo' 'kr/logfmt' \
            'matttproud/golang_protobuf_extensions' \
            'prometheus/client_golang' 'prometheus/client_model' \
-           'prometheus/common/internal/bitbucket.org/ww/goautoneg' \
+           'prometheus/common/main/internal/bitbucket.org/ww/goautoneg' \
            'prometheus/procfs') && \
 	mkdir -pv "$dir_prefix/kingpin.v2" && \
 	cd $dir_prefix/kingpin.v2 && \
-	wget -q https://raw.githubusercontent.com/justwatchcom/elasticsearch_exporter/master/vendor/gopkg.in/alecthomas/kingpin.v2/COPYING && \
+	wget -q https://raw.githubusercontent.com/alecthomas/kingpin/master/COPYING && \
 	cd - && \
 	mkdir -p $dir_prefix/prometheus/common && \
 	cd $dir_prefix/prometheus/common && \
-	wget -q $url_prefix/prometheus/common/LICENSE && \
+	wget -q https://raw.githubusercontent.com/prometheus/common/main/LICENSE && \
 	cd - && \
 	for d in ${license_dir[@]}; do \
 	  mkdir -p $dir_prefix/$d && \
