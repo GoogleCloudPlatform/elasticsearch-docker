@@ -77,6 +77,10 @@ ENV ELASTICSEARCH_DEB_VERSION 6.8.20
 
 ENV C2D_RELEASE=${ELASTICSEARCH_VERSION}
 
+# Workaround for CVE-2021-44228 fix
+# https://www.docker.com/blog/apache-log4j-2-cve-2021-44228/
+ENV ES_JAVA_OPTS="-Dlog4j.formatMsgNoLookups=true"
+
 # copy source code
 RUN wget -q https://github.com/elastic/elasticsearch/archive/v6.8.20.tar.gz -O /usr/local/src/elasticsearch-source-v6.8.20.tar.gz
 
