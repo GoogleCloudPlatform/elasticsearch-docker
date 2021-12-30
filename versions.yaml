@@ -43,7 +43,7 @@ versions:
     elasticsearch:
       gpg: 46095ACC8548582C1A2699A9D27D666CD88E42B4
       major: '6'
-      version: 6.8.20
+      version: 6.8.22
     exporter:
       version: 1.1.0
     gosu:
@@ -51,10 +51,10 @@ versions:
       version: '1.11'
   repo: elasticsearch6
   tags:
-  - 6.8.20-debian9
+  - 6.8.22-debian9
   - 6.8-debian9
   - 6-debian9
-  - 6.8.20
+  - 6.8.22
   - '6.8'
   - '6'
   - latest
